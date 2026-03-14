@@ -1,0 +1,250 @@
+[
+  {
+    "id": "int-travel-01",
+    "level": "Intermediate",
+    "topic": "Travel",
+    "title": "Travel Adventures",
+    "warmup": "What is the most interesting place you have visited?",
+    "vocabulary": [
+      {
+        "word": "Destination",
+        "difficulty": "⭐",
+        "definition": "A place someone travels to",
+        "example": "Paris is a popular destination",
+        "question": "What is your dream destination?"
+      },
+      {
+        "word": "Itinerary",
+        "difficulty": "⭐⭐",
+        "definition": "A planned route or journey",
+        "example": "We have a packed itinerary for our trip to Tokyo.",
+        "question": "Do you prefer a strict itinerary or spontaneous travel?"
+      },
+      {
+        "word": "Wanderlust",
+        "difficulty": "⭐⭐⭐",
+        "definition": "A strong desire to travel",
+        "example": "Her wanderlust took her to five different continents in one year.",
+        "question": "How do you satisfy your wanderlust when you can't travel?"
+      }
+    ],
+    "idioms": [
+      {
+        "idiom": "Hit the road",
+        "meaning": "Start a journey",
+        "example": "We hit the road early in the morning",
+        "question": "When do you usually hit the road?"
+      },
+      {
+        "idiom": "Off the beaten path",
+        "meaning": "In a place where few people go",
+        "example": "We found a tiny restaurant off the beaten path.",
+        "question": "Do you like visiting famous landmarks or going off the beaten path?"
+      }
+    ],
+    "grammar": {
+      "title": "Present Perfect for Experiences",
+      "explanation": "Use 'have/has + past participle' to talk about things you have done in your life without a specific time.",
+      "example": "I have visited Japan twice.",
+      "question": "Have you ever traveled alone?"
+    },
+    "activities": [
+      "Describe your best trip and why it was memorable.",
+      "Is traveling alone better than with friends? Debate with your partner.",
+      "Scenario: Your flight is cancelled and the next one is in 24 hours. What do you do?",
+      "Roleplay: A travel agent trying to sell a trip to a very picky customer.",
+      "Do you think tourism is generally good or bad for local cultures?"
+    ],
+    "wrapup": "Where would you travel if money was unlimited?",
+    "teacherTips": [
+      "Encourage follow-up questions about specific travel details.",
+      "Let students compare their favorite types of accommodation."
+    ]
+  },
+  {
+    "id": "bas-food-01",
+    "level": "Basic",
+    "topic": "Food",
+    "title": "Eating Out",
+    "warmup": "What is your favorite food to eat at a restaurant?",
+    "vocabulary": [
+      {
+        "word": "Cuisine",
+        "difficulty": "⭐⭐",
+        "definition": "A style or method of cooking",
+        "example": "I love Italian cuisine, especially pasta.",
+        "question": "Which international cuisine is your favorite?"
+      },
+      {
+        "word": "Delicious",
+        "difficulty": "⭐",
+        "definition": "Very pleasant to taste",
+        "example": "The cake was delicious.",
+        "question": "What is the most delicious thing you can cook?"
+      },
+      {
+        "word": "Ingredient",
+        "difficulty": "⭐⭐",
+        "definition": "One of the foods that are used to make a dish",
+        "example": "Fresh ingredients are the secret to a good salad.",
+        "question": "What are the three main ingredients in your favorite dish?"
+      }
+    ],
+    "idioms": [
+      {
+        "idiom": "Piece of cake",
+        "meaning": "Something that is very easy to do",
+        "example": "The exam was a piece of cake.",
+        "question": "What is a skill that was a piece of cake for you to learn?"
+      },
+      {
+        "idiom": "Spill the beans",
+        "meaning": "To tell a secret",
+        "example": "Don't spill the beans about the surprise party!",
+        "question": "Is it hard for you to keep a secret? Have you ever accidentally spilled the beans?"
+      }
+    ],
+    "grammar": {
+      "title": "Countable and Uncountable Nouns",
+      "explanation": "Use 'a/an' or numbers for countable nouns. Use 'some/any' for uncountable nouns.",
+      "example": "I have an apple. I have some water.",
+      "question": "What do you usually have in your fridge? Mention 3 countable and 3 uncountable items."
+    },
+    "activities": [
+      "Talk about the last time you went to a restaurant.",
+      "Do you prefer home-cooked meals or fast food? Why?",
+      "Scenario: You received the wrong order at a restaurant. How do you tell the waiter?",
+      "Roleplay: Customer and a waiter who is being very slow.",
+      "If you could only eat one food for the rest of your life, what would it be?"
+    ],
+    "wrapup": "What is the most unusual thing you have ever eaten?",
+    "teacherTips": [
+      "Use photos of food to prompt vocabulary.",
+      "Ask students to describe tastes (sweet, salty, spicy)."
+    ]
+  },
+  {
+    "id": "adv-tech-01",
+    "level": "Advanced",
+    "topic": "Technology",
+    "title": "The AI Revolution",
+    "warmup": "How often do you use Artificial Intelligence in your daily life?",
+    "vocabulary": [
+      {
+        "word": "Ubiquitous",
+        "difficulty": "⭐⭐⭐",
+        "definition": "Present, appearing, or found everywhere",
+        "example": "Smartphones have become ubiquitous in modern society.",
+        "question": "What technology do you think will be ubiquitous in 10 years?"
+      },
+      {
+        "word": "Innovation",
+        "difficulty": "⭐⭐",
+        "definition": "A new method, idea, or product",
+        "example": "Technological innovation is driving economic growth.",
+        "question": "What is the most important innovation of the 21st century?"
+      },
+      {
+        "word": "Automate",
+        "difficulty": "⭐⭐",
+        "definition": "To make a process run by machines rather than people",
+        "example": "Many factories are trying to automate their production lines.",
+        "question": "Which parts of your job or studies would you like to automate?"
+      }
+    ],
+    "idioms": [
+      {
+        "idiom": "On the same wavelength",
+        "meaning": "Thinking in a similar way to someone else",
+        "example": "We're on the same wavelength about the project.",
+        "question": "Who is someone you are always on the same wavelength with?"
+      },
+      {
+        "idiom": "Cutting edge",
+        "meaning": "The most advanced or latest stage of development",
+        "example": "This company is at the cutting edge of medical research.",
+        "question": "What is the most cutting-edge device you own?"
+      }
+    ],
+    "grammar": {
+      "title": "Passive Voice for Processes",
+      "explanation": "Use 'be + past participle' to focus on the action or the object rather than the subject.",
+      "example": "Data is processed by AI algorithms.",
+      "question": "How are smartphones manufactured? Try to use the passive voice."
+    },
+    "activities": [
+      "Discuss: Will AI eventually take over most human jobs?",
+      "Debate: Is social media making us more or less connected?",
+      "Scenario: You wake up and all technology in the world has stopped working. What is your first day like?",
+      "Roleplay: An elderly person asking a teenager to explain how to use a new app.",
+      "What are the ethical concerns regarding facial recognition technology?"
+    ],
+    "wrapup": "If you could invent one piece of technology to solve a world problem, what would it be?",
+    "teacherTips": [
+      "Encourage use of complex sentence structures.",
+      "Help students with formal technological terminology."
+    ]
+  },
+  {
+    "id": "kid-hobbies-01",
+    "level": "Kids",
+    "topic": "Hobbies",
+    "title": "Fun After School",
+    "warmup": "What do you like to do after you finish your homework?",
+    "vocabulary": [
+      {
+        "word": "Collection",
+        "difficulty": "⭐",
+        "definition": "A group of things that are the same type",
+        "example": "I have a big collection of toy cars.",
+        "question": "Do you have a collection of anything?"
+      },
+      {
+        "word": "Hobby",
+        "difficulty": "⭐",
+        "definition": "An activity done for pleasure in one's free time",
+        "example": "Painting is my favorite hobby.",
+        "question": "What is your favorite hobby?"
+      },
+      {
+        "word": "Practice",
+        "difficulty": "⭐",
+        "definition": "Doing something again and again to get better",
+        "example": "I practice the piano every day.",
+        "question": "What do you need to practice to get better at?"
+      }
+    ],
+    "idioms": [
+      {
+        "idiom": "A couch potato",
+        "meaning": "A person who watches a lot of TV and does not exercise",
+        "example": "Don't be a couch potato! Let's go outside.",
+        "question": "Is it okay to be a couch potato sometimes? When?"
+      },
+      {
+        "idiom": "Have a blast",
+        "meaning": "To have a very fun time",
+        "example": "We had a blast at the birthday party.",
+        "question": "When was the last time you had a blast?"
+      }
+    ],
+    "grammar": {
+      "title": "Like / Enjoy + -ing",
+      "explanation": "Use the '-ing' form of a verb after 'like' or 'enjoy'.",
+      "example": "I like swimming. I enjoy playing games.",
+      "question": "What are three things you like doing on the weekend?"
+    },
+    "activities": [
+      "Show and tell: Describe your favorite toy or game.",
+      "What is something new you want to try this year?",
+      "Scenario: You want to start a club at school. What is the club and what do you do?",
+      "Roleplay: One student is a teacher and the other is a student. The teacher asks about the student's weekend.",
+      "Draw your favorite hobby and explain it to the class."
+    ],
+    "wrapup": "If you could spend the whole day doing only one thing, what would it be?",
+    "teacherTips": [
+      "Keep the energy high and use simple words.",
+      "Use gestures and drawings to help explain meanings."
+    ]
+  }
+]
