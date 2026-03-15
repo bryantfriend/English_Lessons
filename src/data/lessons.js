@@ -1,91 +1,187 @@
+const LESSONS_PER_LEVEL = 100;
+
+const INTERMEDIATE_TITLES = [
+  'Travel experiences',
+  'Cultural traditions',
+  'Music and emotions',
+  'Dream jobs',
+  'Education systems',
+  'Technology in daily life',
+  'Artificial intelligence',
+  'Climate change',
+  'Social media influence',
+  'Future of transportation',
+  'Healthy lifestyle habits',
+  'Food and global cuisines',
+  'Movies and storytelling',
+  'Online learning',
+  'Space exploration',
+  'Hobbies and free time',
+  'Urban vs. rural living',
+  'Friendship and trust',
+  'Relationships and communication',
+  'Dealing with stress',
+  'Personal growth',
+  'Courage and fear',
+  'Time management',
+  'Public speaking',
+  'Personal finance basics',
+  'Cultural differences in communication',
+  'Work-life balance',
+  'Remote work culture',
+  'Leadership styles',
+  'Teamwork and collaboration',
+  'Creativity and innovation',
+  'The meaning of success',
+  'Failure and resilience',
+  'Self-discipline',
+  'Motivation and inspiration',
+  'Influencers and fame',
+  'Online privacy',
+  'The power of storytelling',
+  'Art and creativity',
+  'Fashion and identity',
+  'Gender equality',
+  'Education reform',
+  'The role of media',
+  'Mental health awareness',
+  'Travel dreams',
+  'Personal heroes',
+  'Learning a new language',
+  'Volunteering and community service',
+  'Environmental protection',
+  'Plastic pollution',
+  'Renewable energy',
+  'Globalization',
+  'Cultural stereotypes',
+  'Crime and punishment',
+  'Freedom of speech',
+  'Internet addiction',
+  'Digital detox',
+  'Mindfulness and meditation',
+  'Happiness and life satisfaction',
+  'Body image and confidence',
+  'Social inequality',
+  'Poverty and education',
+  'Immigration and diversity',
+  'Ethics in technology',
+  'Robots and automation',
+  'The gig economy',
+  'Entrepreneurship',
+  'Consumerism',
+  'Advertising and persuasion',
+  'Fake news and misinformation',
+  'Space tourism',
+  'Human relationships in the digital era',
+  'The psychology of motivation',
+  'Decision-making',
+  'Conflict resolution',
+  'Cultural taboos',
+  'Parenting styles',
+  'Education vs. experience',
+  'Censorship and freedom',
+  'Global health issues',
+  'Vaccines and public trust',
+  'Urban development',
+  'The future of cities',
+  'E-sports and gaming',
+  'Sports and teamwork',
+  'Music genres and trends',
+  'Art in modern society',
+  'Cinema and culture',
+  'Sustainability and lifestyle',
+  'Future of education',
+  'Cultural festivals',
+  'Moral dilemmas',
+  'Superstitions around the world',
+  'Language and identity',
+  'The future of work',
+  'Digital citizenship',
+  'Science and society',
+  'Ethical consumer choices',
+  'Climate solutions',
+  'Tradition and modern life',
+];
+
 const LEVEL_CONFIGS = [
-  {
-    level: 'Kids Starter',
-    audience: 'Early vocabulary builders',
-    topics: [
-      createTopicTemplate('Animals', 'animal friends', 'Present simple with "have" and "like"', ['Puppy', 'Jungle', 'Feather'], ['Busy as a bee', 'Copycat']),
-      createTopicTemplate('Colors', 'colors and art', 'There is / There are', ['Rainbow', 'Bright', 'Paint'], ['Green thumb', 'Paint the town red']),
-      createTopicTemplate('Family', 'family life', 'Possessive adjectives', ['Cousin', 'Care', 'Home'], ['Like father, like son', 'Runs in the family']),
-      createTopicTemplate('School', 'school routines', 'Can / Can\'t for ability', ['Backpack', 'Teacher', 'Library'], ['Learn the ropes', 'Top of the class']),
-      createTopicTemplate('Playtime', 'games and toys', 'Imperatives for instructions', ['Puzzle', 'Bounce', 'Team'], ['In the game', 'Level up']),
-      createTopicTemplate('Nature', 'outdoor discoveries', 'Adjectives and opposites', ['Forest', 'Sunny', 'River'], ['Fresh as a daisy', 'Out of the woods']),
-    ],
-  },
-  {
-    level: 'Kids Explorer',
-    audience: 'Growing speakers',
-    topics: [
-      createTopicTemplate('Hobbies', 'after-school hobbies', 'Like / Enjoy + -ing', ['Practice', 'Collection', 'Creative'], ['Have a blast', 'Couch potato']),
-      createTopicTemplate('Friends', 'friendship and teamwork', 'Present continuous', ['Helpful', 'Share', 'Invite'], ['Buddy up', 'Stick together']),
-      createTopicTemplate('Food', 'mealtimes and snacks', 'Some / Any', ['Crunchy', 'Snack', 'Healthy'], ['Full of beans', 'Piece of cake']),
-      createTopicTemplate('Travel', 'family trips and adventures', 'Past simple regular verbs', ['Ticket', 'Map', 'Journey'], ['Hit the road', 'On the go']),
-      createTopicTemplate('Storytime', 'books and imagination', 'Sequencing words', ['Chapter', 'Hero', 'Adventure'], ['Page-turner', 'Happy ending']),
-      createTopicTemplate('Science Fun', 'simple science wonders', 'Because / So', ['Experiment', 'Rocket', 'Magnet'], ['Light-bulb moment', 'Blast off']),
-    ],
-  },
-  {
-    level: 'Kids Champions',
-    audience: 'Confident kid communicators',
-    topics: [
-      createTopicTemplate('Sports', 'sports and movement', 'Comparatives', ['Champion', 'Practice', 'Goal'], ['Keep your eye on the ball', 'In the running']),
-      createTopicTemplate('Creativity', 'art and making things', 'Future with going to', ['Design', 'Invent', 'Imagine'], ['Think outside the box', 'Draw a blank']),
-      createTopicTemplate('Helping Others', 'kindness and community', 'Should / Shouldn\'t', ['Volunteer', 'Kindness', 'Community'], ['Lend a hand', 'Heart of gold']),
-      createTopicTemplate('Tech for Kids', 'technology and digital life', 'Must / Mustn\'t', ['Robot', 'Screen', 'Code'], ['Push the button', 'Rule of thumb']),
-      createTopicTemplate('World Around Us', 'places and cultures', 'Question forms', ['Culture', 'Planet', 'Explore'], ['Small world', 'Open doors']),
-      createTopicTemplate('Big Dreams', 'future goals', 'Want to / Hope to', ['Dream', 'Career', 'Plan'], ['Reach for the stars', 'Big idea']),
-    ],
-  },
-  {
-    level: 'Basic',
-    audience: 'Everyday conversation',
-    topics: [
-      createTopicTemplate('Food', 'food and restaurants', 'Countable and uncountable nouns', ['Ingredient', 'Delicious', 'Cuisine'], ['Piece of cake', 'Spill the beans']),
-      createTopicTemplate('Daily Life', 'daily routines', 'Present simple', ['Routine', 'Usually', 'Schedule'], ['Clockwork', 'Rise and shine']),
-      createTopicTemplate('Shopping', 'buying and prices', 'This / That / These / Those', ['Receipt', 'Discount', 'Cashier'], ['Shop around', 'Cost an arm and a leg']),
-      createTopicTemplate('Health', 'health habits', 'Have to / Don\'t have to', ['Exercise', 'Balance', 'Checkup'], ['Back on your feet', 'Under the weather']),
-      createTopicTemplate('Work', 'jobs and responsibilities', 'Adverbs of frequency', ['Task', 'Office', 'Customer'], ['Learn the ropes', 'Hands full']),
-      createTopicTemplate('Weather', 'weather and seasons', 'Present continuous for now', ['Forecast', 'Cloudy', 'Storm'], ['Under the weather', 'Come rain or shine']),
-    ],
-  },
+  createLevelConfig('Kids Starter', 'Early vocabulary builders', [
+    'My family',
+    'My school day',
+    'Colors around us',
+    'Animals and pets',
+    'Food I like',
+    'My favorite toys',
+    'Weather today',
+    'At the playground',
+    'My classroom',
+    'Happy and sad feelings',
+  ]),
+  createLevelConfig('Kids Explorer', 'Growing speakers', [
+    'After-school hobbies',
+    'Best friends',
+    'Birthday parties',
+    'Family trips',
+    'Healthy snacks',
+    'Sports day',
+    'Story books',
+    'Helping at home',
+    'Fun science',
+    'Dream adventures',
+  ]),
+  createLevelConfig('Kids Champions', 'Confident kid communicators', [
+    'Teamwork',
+    'Big dreams',
+    'Helping others',
+    'Amazing inventions',
+    'Nature and animals',
+    'School projects',
+    'Favorite games',
+    'Travel and places',
+    'Art and imagination',
+    'Being brave',
+  ]),
+  createLevelConfig('Basic', 'Everyday conversation', [
+    'Food and restaurants',
+    'Shopping',
+    'Daily routines',
+    'Health habits',
+    'Weather and seasons',
+    'Travel plans',
+    'Jobs and work',
+    'Friends and family',
+    'Entertainment',
+    'Technology basics',
+  ]),
   {
     level: 'Intermediate',
     audience: 'Fluent social speakers',
-    topics: [
-      createTopicTemplate('Travel', 'travel and culture', 'Present perfect for experiences', ['Destination', 'Itinerary', 'Wanderlust'], ['Hit the road', 'Off the beaten path']),
-      createTopicTemplate('Relationships', 'friendship and family dynamics', 'Used to', ['Supportive', 'Boundary', 'Connection'], ['On the same page', 'Break the ice']),
-      createTopicTemplate('Media', 'news and entertainment', 'Reported speech', ['Headline', 'Review', 'Audience'], ['Word of mouth', 'In the spotlight']),
-      createTopicTemplate('Environment', 'nature and sustainability', 'First conditional', ['Climate', 'Recycle', 'Conservation'], ['Go green', 'Tip of the iceberg']),
-      createTopicTemplate('Career', 'work and ambition', 'Present perfect continuous', ['Promotion', 'Deadline', 'Skillset'], ['Climb the ladder', 'Think on your feet']),
-      createTopicTemplate('Culture', 'society and traditions', 'Relative clauses', ['Heritage', 'Festival', 'Custom'], ['Melting pot', 'Pass down']),
-    ],
+    lessonTitles: INTERMEDIATE_TITLES,
   },
-  {
-    level: 'Advanced',
-    audience: 'High-level discussion',
-    topics: [
-      createTopicTemplate('Technology', 'technology and innovation', 'Passive voice for processes', ['Ubiquitous', 'Innovation', 'Automate'], ['On the same wavelength', 'Cutting edge']),
-      createTopicTemplate('Leadership', 'leadership and influence', 'Cleft sentences', ['Vision', 'Delegate', 'Strategy'], ['Call the shots', 'Lead by example']),
-      createTopicTemplate('Ethics', 'moral decision-making', 'Modal verbs for deduction', ['Integrity', 'Dilemma', 'Accountability'], ['Gray area', 'Cross the line']),
-      createTopicTemplate('Global Issues', 'international challenges', 'Conditionals review', ['Diplomacy', 'Crisis', 'Policy'], ['At stake', 'Common ground']),
-      createTopicTemplate('Innovation', 'design and progress', 'Participle clauses', ['Prototype', 'Disrupt', 'Iteration'], ['Raise the bar', 'Game changer']),
-      createTopicTemplate('Psychology', 'behavior and mindset', 'Inversion for emphasis', ['Resilience', 'Bias', 'Perception'], ['Mind over matter', 'Read between the lines']),
-    ],
-  },
+  createLevelConfig('Advanced', 'High-level discussion', [
+    'Global politics',
+    'Ethics in science',
+    'Innovation and disruption',
+    'Leadership in crisis',
+    'Philosophy and meaning',
+    'Media and power',
+    'Economic systems',
+    'Psychology and behavior',
+    'Sustainability',
+    'Future societies',
+  ]),
 ];
-
-const LESSONS_PER_TOPIC = 100;
 
 const LESSON_FOCUSES = [
   'building confidence',
+  'sharing opinions clearly',
   'asking follow-up questions',
-  'sharing personal examples',
-  'describing reasons clearly',
-  'comparing ideas',
-  'telling short stories',
-  'working with a partner',
-  'using target grammar naturally',
-  'noticing new vocabulary',
-  'speaking in full sentences',
+  'supporting ideas with examples',
+  'comparing different viewpoints',
+  'using new vocabulary in speech',
+  'speaking more naturally',
+  'using target grammar accurately',
+  'expanding discussion length',
+  'reflecting on personal experience',
 ];
 
 const ACTIVITY_STYLES = [
@@ -94,115 +190,135 @@ const ACTIVITY_STYLES = [
   'problem-solving task',
   'mini debate',
   'story challenge',
-  'picture prompt',
+  'opinion exchange',
   'question carousel',
-  'choice and justify task',
+  'partner interview',
 ];
 
-function createTopicTemplate(topic, subject, grammarTitle, vocabularyWords, idioms) {
-  return {
-    topic,
-    subject,
-    grammarTitle,
-    vocabularyWords,
-    idioms,
-  };
-}
+const GRAMMAR_PATTERNS = [
+  'present perfect for experience',
+  'comparatives and superlatives',
+  'first conditional',
+  'reported speech',
+  'modal verbs for advice',
+  'passive voice',
+  'relative clauses',
+  'present perfect continuous',
+];
 
-function rotate(list, offset) {
-  return list.map((_, index) => list[(index + offset) % list.length]);
-}
+const IDIOM_BANK = [
+  'break the ice',
+  'on the same page',
+  'think outside the box',
+  'hit the road',
+  'a breath of fresh air',
+  'keep an open mind',
+  'in the spotlight',
+  'learn the ropes',
+  'go the extra mile',
+  'read between the lines',
+];
 
-function buildVocabulary(topic, lessonNumber, words) {
-  return rotate(words, lessonNumber % words.length).slice(0, 3).map((word, index) => ({
-    word: `${word} ${lessonNumber}`,
-    difficulty: index === 0 ? '⭐' : index === 1 ? '⭐⭐' : '⭐⭐⭐',
-    definition: `${word} language for talking about ${topic.toLowerCase()} in lesson ${lessonNumber}.`,
-    example: `We used "${word.toLowerCase()}" while discussing ${topic.toLowerCase()} in class today.`,
-    question: `How can you use "${word.toLowerCase()}" when you talk about ${topic.toLowerCase()}?`,
-  }));
-}
+function createLevelConfig(level, audience, seeds) {
+  const lessonTitles = Array.from({ length: LESSONS_PER_LEVEL }, (_, index) => {
+    const seed = seeds[index % seeds.length];
+    const unit = Math.floor(index / seeds.length) + 1;
+    return `${seed} ${unit}`;
+  });
 
-function buildIdioms(topic, lessonNumber, idioms) {
-  return rotate(idioms, lessonNumber % idioms.length).slice(0, 2).map((idiom, index) => ({
-    idiom,
-    meaning: `An expression teachers can connect to ${topic.toLowerCase()} conversations.`,
-    example: `In lesson ${lessonNumber}, we can use "${idiom.toLowerCase()}" while talking about ${topic.toLowerCase()}.`,
-    question: `Can you think of a time this idiom fits a ${topic.toLowerCase()} situation?`,
-    difficulty: index + 1,
-  }));
-}
-
-function buildActivities(topic, subject, lessonNumber) {
-  const activitySeed = rotate(ACTIVITY_STYLES, lessonNumber % ACTIVITY_STYLES.length);
-  return [
-    `Warm pair discussion about ${subject} with a focus on lesson ${lessonNumber}.`,
-    `Guided ${activitySeed[0]} where students compare their own experiences with ${topic.toLowerCase()}.`,
-    `Small-group ${activitySeed[1]} using the target grammar and at least two new words.`,
-    `Creative ${activitySeed[2]}: students solve a ${topic.toLowerCase()} challenge together.`,
-    `Reflection ${activitySeed[3]} where students explain what they learned from the topic.`,
-  ];
-}
-
-function buildGrammar(grammarTitle, topic, lessonNumber) {
-  return {
-    title: `${grammarTitle} ${lessonNumber}`,
-    explanation: `Lesson ${lessonNumber} practices ${grammarTitle.toLowerCase()} through ${topic.toLowerCase()} speaking tasks.`,
-    example: `This is lesson ${lessonNumber}, and we are using ${grammarTitle.toLowerCase()} to talk about ${topic.toLowerCase()}.`,
-    question: `Can you make your own sentence about ${topic.toLowerCase()} using this grammar pattern?`,
-  };
-}
-
-function buildLesson(levelConfig, topicConfig, lessonNumber) {
-  const focus = LESSON_FOCUSES[(lessonNumber - 1) % LESSON_FOCUSES.length];
-  return {
-    id: `${slugify(levelConfig.level)}-${slugify(topicConfig.topic)}-${String(lessonNumber).padStart(3, '0')}`,
-    level: levelConfig.level,
-    topic: topicConfig.topic,
-    title: `${topicConfig.topic} Lesson ${lessonNumber}`,
-    sequence: lessonNumber,
-    sequenceLabel: `Lesson ${lessonNumber}`,
-    audience: levelConfig.audience,
-    objective: `Practice ${topicConfig.subject} while ${focus}.`,
-    warmup: `What comes to mind when you think about ${topicConfig.subject}, and how does it connect to your life?`,
-    vocabulary: buildVocabulary(topicConfig.topic, lessonNumber, topicConfig.vocabularyWords),
-    idioms: buildIdioms(topicConfig.topic, lessonNumber, topicConfig.idioms),
-    grammar: buildGrammar(topicConfig.grammarTitle, topicConfig.topic, lessonNumber),
-    activities: buildActivities(topicConfig.topic, topicConfig.subject, lessonNumber),
-    wrapup: `What is one new idea from ${topicConfig.topic.toLowerCase()} lesson ${lessonNumber} that you want to remember?`,
-    teacherTips: [
-      `Model one strong answer before students begin the ${topicConfig.topic.toLowerCase()} discussion.`,
-      `Pause after each activity so learners can reuse the vocabulary from lesson ${lessonNumber}.`,
-      `Stretch the lesson by adding partner follow-up questions if students finish early.`,
-    ],
-  };
+  return { level, audience, lessonTitles };
 }
 
 function slugify(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+function extractKeywords(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter((word) => word.length > 3)
+    .slice(0, 3);
+}
+
+function buildVocabulary(title, lessonNumber) {
+  const keywords = extractKeywords(title);
+  const baseWords = [...keywords, 'discussion', 'opinion', 'example'];
+  return Array.from({ length: 3 }, (_, index) => {
+    const word = baseWords[(lessonNumber + index) % baseWords.length];
+    return {
+      word: word.charAt(0).toUpperCase() + word.slice(1),
+      difficulty: index === 0 ? '⭐' : index === 1 ? '⭐⭐' : '⭐⭐⭐',
+      definition: `Useful language for talking about ${title.toLowerCase()}.`,
+      example: `We used "${word}" while discussing ${title.toLowerCase()} in class.`,
+      question: `How can you use "${word}" in a sentence about ${title.toLowerCase()}?`,
+    };
+  });
+}
+
+function buildIdioms(title, lessonNumber) {
+  return Array.from({ length: 2 }, (_, index) => {
+    const idiom = IDIOM_BANK[(lessonNumber + index) % IDIOM_BANK.length];
+    return {
+      idiom,
+      meaning: `A useful expression for lessons about ${title.toLowerCase()}.`,
+      example: `This idiom can help students discuss ${title.toLowerCase()} in a natural way.`,
+      question: `When could you use "${idiom}" while talking about ${title.toLowerCase()}?`,
+    };
+  });
+}
+
+function buildGrammar(title, lessonNumber) {
+  const grammarTitle = GRAMMAR_PATTERNS[(lessonNumber - 1) % GRAMMAR_PATTERNS.length];
+  return {
+    title: grammarTitle.charAt(0).toUpperCase() + grammarTitle.slice(1),
+    explanation: `Lesson ${lessonNumber} practices ${grammarTitle} through speaking tasks about ${title.toLowerCase()}.`,
+    example: `Students use ${grammarTitle} while discussing ${title.toLowerCase()}.`,
+    question: `Can you make your own sentence about ${title.toLowerCase()} using this grammar pattern?`,
+  };
+}
+
+function buildActivities(title, lessonNumber) {
+  return Array.from({ length: 5 }, (_, index) => {
+    const style = ACTIVITY_STYLES[(lessonNumber + index) % ACTIVITY_STYLES.length];
+    return `${style.charAt(0).toUpperCase() + style.slice(1)} focused on ${title.toLowerCase()}.`;
+  });
+}
+
+function buildLesson(levelConfig, title, lessonNumber) {
+  const focus = LESSON_FOCUSES[(lessonNumber - 1) % LESSON_FOCUSES.length];
+  return {
+    id: `${slugify(levelConfig.level)}-${String(lessonNumber).padStart(3, '0')}`,
+    level: levelConfig.level,
+    topic: title,
+    title,
+    sequence: lessonNumber,
+    sequenceLabel: `Lesson ${lessonNumber}`,
+    audience: levelConfig.audience,
+    objective: `Practice ${title.toLowerCase()} while ${focus}.`,
+    warmup: `What do you already think or know about ${title.toLowerCase()}?`,
+    vocabulary: buildVocabulary(title, lessonNumber),
+    idioms: buildIdioms(title, lessonNumber),
+    grammar: buildGrammar(title, lessonNumber),
+    activities: buildActivities(title, lessonNumber),
+    wrapup: `What is one important idea from today’s lesson on ${title.toLowerCase()}?`,
+    teacherTips: [
+      `Start with one simple example related to ${title.toLowerCase()}.`,
+      `Encourage students to reuse the target vocabulary during speaking tasks.`,
+      `Add follow-up questions if the class needs more speaking time.`,
+    ],
+  };
+}
+
 const lessons = LEVEL_CONFIGS.flatMap((levelConfig) =>
-  levelConfig.topics.flatMap((topicConfig) =>
-    Array.from({ length: LESSONS_PER_TOPIC }, (_, index) =>
-      buildLesson(levelConfig, topicConfig, index + 1),
-    ),
-  ),
+  levelConfig.lessonTitles.map((title, index) => buildLesson(levelConfig, title, index + 1)),
 );
 
 export const curriculum = LEVEL_CONFIGS.map((levelConfig) => ({
   level: levelConfig.level,
   audience: levelConfig.audience,
-  topics: levelConfig.topics.map((topicConfig) => ({
-    topic: topicConfig.topic,
-    lessonCount: LESSONS_PER_TOPIC,
-  })),
-  lessonCount: levelConfig.topics.length * LESSONS_PER_TOPIC,
+  lessonCount: levelConfig.lessonTitles.length,
 }));
-
-export const lessonsByLevel = curriculum.reduce((map, levelConfig) => {
-  map[levelConfig.level] = levelConfig.topics;
-  return map;
-}, {});
 
 export default lessons;

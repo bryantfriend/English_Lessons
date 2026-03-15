@@ -23,7 +23,6 @@ const App = () => {
   const [appPhase, setAppPhase] = useState('launch');
   const [currentView, setView] = useState('home');
   const [selectedLevel, setSelectedLevel] = useState(null);
-  const [selectedTopic, setSelectedTopic] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('teacher_favs');
@@ -37,21 +36,12 @@ const App = () => {
 
   const levels = curriculum;
 
-  const topics = useMemo(() => {
+  const lessonsForLevel = useMemo(() => {
     if (!selectedLevel) {
       return [];
     }
-    return curriculum.find((level) => level.level === selectedLevel)?.topics ?? [];
+    return lessonsData.filter((lesson) => lesson.level === selectedLevel);
   }, [selectedLevel]);
-
-  const lessonsForTopic = useMemo(() => {
-    if (!selectedLevel || !selectedTopic) {
-      return [];
-    }
-    return lessonsData.filter(
-      (lesson) => lesson.level === selectedLevel && lesson.topic === selectedTopic,
-    );
-  }, [selectedLevel, selectedTopic]);
 
   useEffect(() => {
     localStorage.setItem('teacher_favs', JSON.stringify(favorites));
@@ -82,7 +72,6 @@ const App = () => {
 
   const openLesson = (lesson) => {
     setSelectedLevel(lesson.level);
-    setSelectedTopic(lesson.topic);
     setSelectedLesson(lesson);
     setView('lesson');
     setIsMobileOpen(false);
@@ -90,13 +79,6 @@ const App = () => {
 
   const handleLevelSelect = (level) => {
     setSelectedLevel(level);
-    setSelectedTopic(null);
-    setSelectedLesson(null);
-    setView('topic');
-  };
-
-  const handleTopicSelect = (topic) => {
-    setSelectedTopic(topic);
     setSelectedLesson(null);
     setView('lessons');
     setIsMobileOpen(false);
@@ -164,42 +146,11 @@ const App = () => {
                     <h2 style={{ fontSize: '1.75rem', color: 'var(--primary)', marginBottom: '0.5rem' }}>{level.level}</h2>
                     <p style={{ color: 'var(--text-muted)' }}>{level.audience}</p>
                     <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                      {level.topics.length} categories • {level.lessonCount} lessons
+                      {level.lessonCount} lessons
                     </p>
                     <div style={{ marginTop: '1.5rem', color: 'var(--primary)' }}>
                       <ChevronRight size={32} style={{ margin: '0 auto' }} />
                     </div>
-                  </div>
-                ))}
-              </div>
-            </MotionDiv>
-          )}
-
-          {currentView === 'topic' && (
-            <MotionDiv 
-              key="topic"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              <button className="btn" onClick={() => setView('home')} style={{ marginBottom: '1.5rem', background: 'none' }}>
-                <ArrowLeft size={18} />
-                <span>Back to Levels</span>
-              </button>
-              <h1 style={{ marginBottom: '2rem' }}>{selectedLevel} Topics</h1>
-              <div className="grid-topics">
-                {topics.map((topic) => (
-                  <div
-                    key={topic.topic}
-                    className="card"
-                    onClick={() => handleTopicSelect(topic.topic)}
-                    style={{ cursor: 'pointer', padding: '1.5rem' }}
-                  >
-                    <h3 style={{ fontSize: '1.1rem' }}>{topic.topic}</h3>
-                    <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)', fontSize: '0.92rem' }}>
-                      {topic.lessonCount} lessons in this category
-                    </p>
-                    <ChevronRight size={18} style={{ marginTop: '0.5rem', color: '#ccc' }} />
                   </div>
                 ))}
               </div>
@@ -213,17 +164,17 @@ const App = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
             >
-              <button className="btn" onClick={() => setView('topic')} style={{ marginBottom: '1.5rem', background: 'none' }}>
+              <button className="btn" onClick={() => setView('home')} style={{ marginBottom: '1.5rem', background: 'none' }}>
                 <ArrowLeft size={18} />
-                <span>Back to Categories</span>
+                <span>Back to Levels</span>
               </button>
-              <h1 style={{ marginBottom: '0.75rem' }}>{selectedTopic}</h1>
+              <h1 style={{ marginBottom: '0.75rem' }}>{selectedLevel}</h1>
               <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-                {selectedLevel} • {lessonsForTopic.length} lessons ready to teach
+                {lessonsForLevel.length} lessons ready to teach
               </p>
 
               <div className="grid-lessons">
-                {lessonsForTopic.map((lesson) => (
+                {lessonsForLevel.map((lesson) => (
                   <div
                     key={lesson.id}
                     className="card lesson-card"
