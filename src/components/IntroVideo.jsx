@@ -4,10 +4,11 @@ import { SkipForward } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const IntroVideo = ({ onComplete }) => {
+  const MotionDiv = motion.div;
   const videoRef = useRef(null);
 
   return (
-    <motion.div 
+    <MotionDiv 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -51,7 +52,7 @@ const IntroVideo = ({ onComplete }) => {
         <span>Skip</span>
         <SkipForward size={18} />
       </button>
-    </motion.div>
+    </MotionDiv>
   );
 };
 

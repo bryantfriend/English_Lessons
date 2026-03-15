@@ -3,18 +3,27 @@ import Sidebar from './components/Sidebar.jsx';
 import LessonDisplay from './components/LessonDisplay.jsx';
 import LaunchScreen from './components/LaunchScreen.jsx';
 import IntroVideo from './components/IntroVideo.jsx';
-import lessonsData from './data/lessons.json';
+import lessonsData, { curriculum } from './data/lessons.js';
 import logo from './assets/Logo.png';
-import { 
-  ChevronRight, ArrowLeft, Search as SearchIcon, 
-  Copy, Check, Layout, AlertCircle, Menu, X
+import {
+  ChevronRight,
+  ArrowLeft,
+  Search as SearchIcon,
+  Copy,
+  Check,
+  Layout,
+  AlertCircle,
+  Menu,
+  BookOpenCheck,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
-  const [appPhase, setAppPhase] = useState('launch'); // launch, video, app
-  const [currentView, setView] = useState('home'); 
+  const MotionDiv = motion.div;
+  const [appPhase, setAppPhase] = useState('launch');
+  const [currentView, setView] = useState('home');
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('teacher_favs');
@@ -22,57 +31,80 @@ const App = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [copied, setCopied] = useState(false);
-  const [createLevel, setCreateLevel] = useState('Intermediate');
+  const [createLevel, setCreateLevel] = useState(curriculum[0]?.level ?? '');
   const [createTopic, setCreateTopic] = useState('');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const levels = ['Kids', 'Basic', 'Intermediate', 'Advanced'];
-  
+  const levels = curriculum;
+
   const topics = useMemo(() => {
-    if (!selectedLevel) return [];
-    const levelLessons = lessonsData.filter(l => l.level === selectedLevel);
-    return [...new Set(levelLessons.map(l => l.topic))];
+    if (!selectedLevel) {
+      return [];
+    }
+    return curriculum.find((level) => level.level === selectedLevel)?.topics ?? [];
   }, [selectedLevel]);
+
+  const lessonsForTopic = useMemo(() => {
+    if (!selectedLevel || !selectedTopic) {
+      return [];
+    }
+    return lessonsData.filter(
+      (lesson) => lesson.level === selectedLevel && lesson.topic === selectedTopic,
+    );
+  }, [selectedLevel, selectedTopic]);
 
   useEffect(() => {
     localStorage.setItem('teacher_favs', JSON.stringify(favorites));
   }, [favorites]);
 
   const toggleFavorite = (id) => {
-    setFavorites(prev => 
-      prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((favoriteId) => favoriteId !== id) : [...prev, id],
     );
   };
 
   const filteredLessons = useMemo(() => {
-    if (!searchQuery) return [];
+    if (!searchQuery) {
+      return [];
+    }
     const q = searchQuery.toLowerCase();
-    return lessonsData.filter(l => 
-      l.title.toLowerCase().includes(q) ||
-      l.topic.toLowerCase().includes(q) ||
-      l.vocabulary.some(v => v.word.toLowerCase().includes(q)) ||
-      l.idioms.some(i => i.idiom.toLowerCase().includes(q)) ||
-      l.grammar.title.toLowerCase().includes(q)
+    return lessonsData.filter(
+      (lesson) =>
+        lesson.title.toLowerCase().includes(q) ||
+        lesson.topic.toLowerCase().includes(q) ||
+        lesson.level.toLowerCase().includes(q) ||
+        lesson.objective.toLowerCase().includes(q) ||
+        lesson.vocabulary.some((vocabularyItem) => vocabularyItem.word.toLowerCase().includes(q)) ||
+        lesson.idioms.some((idiomItem) => idiomItem.idiom.toLowerCase().includes(q)) ||
+        lesson.grammar.title.toLowerCase().includes(q),
     );
   }, [searchQuery]);
 
+  const openLesson = (lesson) => {
+    setSelectedLevel(lesson.level);
+    setSelectedTopic(lesson.topic);
+    setSelectedLesson(lesson);
+    setView('lesson');
+    setIsMobileOpen(false);
+  };
+
   const handleLevelSelect = (level) => {
     setSelectedLevel(level);
+    setSelectedTopic(null);
+    setSelectedLesson(null);
     setView('topic');
   };
 
   const handleTopicSelect = (topic) => {
-    const lesson = lessonsData.find(l => l.level === selectedLevel && l.topic === topic);
-    if (lesson) {
-      setSelectedLesson(lesson);
-      setView('lesson');
-      setIsMobileOpen(false);
-    }
+    setSelectedTopic(topic);
+    setSelectedLesson(null);
+    setView('lessons');
+    setIsMobileOpen(false);
   };
 
   const handleCopyPrompt = () => {
-    const prompt = `Create a 1-hour English conversation lesson.\n\nLevel: ${createLevel}\nTopic: ${createTopic}\n\nInclude:\n1 warm-up question\n3 vocabulary words (definition, example, speaking question)\n2 idioms (meaning, example, practice question)\n1 grammar rule (explanation, example, speaking practice)\n5 conversation activities\n1 wrap-up question\n2–3 teacher tips\n\nVocabulary must include difficulty markers (⭐, ⭐⭐, ⭐⭐⭐).`;
-    
+    const prompt = `Create a 1-hour English conversation lesson.\n\nLevel: ${createLevel}\nTopic: ${createTopic}\n\nInclude:\n1 warm-up question\n3 vocabulary words (definition, example, speaking question)\n2 idioms (meaning, example, practice question)\n1 grammar rule (explanation, example, speaking practice)\n5 conversation activities\n1 wrap-up question\n2-3 teacher tips\n\nVocabulary must include difficulty markers (⭐, ⭐⭐, ⭐⭐⭐).`;
+
     navigator.clipboard.writeText(prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -109,13 +141,12 @@ const App = () => {
         currentView={currentView} 
         setView={(v) => { setView(v); setIsMobileOpen(false); }} 
         isMobileOpen={isMobileOpen}
-        setIsMobileOpen={setIsMobileOpen}
       />
       
       <main className="content-area">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
-            <motion.div 
+            <MotionDiv 
               key="home"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -123,21 +154,29 @@ const App = () => {
             >
               <h1 style={{ marginBottom: '2rem' }}>Choose Level</h1>
               <div className="grid-levels">
-                {levels.map(level => (
-                  <div key={level} className="card" onClick={() => handleLevelSelect(level)} style={{ cursor: 'pointer', textAlign: 'center', padding: '3rem 2rem' }}>
-                    <h2 style={{ fontSize: '1.75rem', color: 'var(--primary)', marginBottom: '0.5rem' }}>{level}</h2>
-                    <p style={{ color: 'var(--text-muted)' }}>100 Lessons</p>
+                {levels.map((level) => (
+                  <div
+                    key={level.level}
+                    className="card"
+                    onClick={() => handleLevelSelect(level.level)}
+                    style={{ cursor: 'pointer', textAlign: 'center', padding: '3rem 2rem' }}
+                  >
+                    <h2 style={{ fontSize: '1.75rem', color: 'var(--primary)', marginBottom: '0.5rem' }}>{level.level}</h2>
+                    <p style={{ color: 'var(--text-muted)' }}>{level.audience}</p>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                      {level.topics.length} categories • {level.lessonCount} lessons
+                    </p>
                     <div style={{ marginTop: '1.5rem', color: 'var(--primary)' }}>
                       <ChevronRight size={32} style={{ margin: '0 auto' }} />
                     </div>
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
           )}
 
           {currentView === 'topic' && (
-            <motion.div 
+            <MotionDiv 
               key="topic"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -149,36 +188,82 @@ const App = () => {
               </button>
               <h1 style={{ marginBottom: '2rem' }}>{selectedLevel} Topics</h1>
               <div className="grid-topics">
-                {topics.map(topic => (
-                  <div key={topic} className="card" onClick={() => handleTopicSelect(topic)} style={{ cursor: 'pointer', padding: '1.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{topic}</h3>
+                {topics.map((topic) => (
+                  <div
+                    key={topic.topic}
+                    className="card"
+                    onClick={() => handleTopicSelect(topic.topic)}
+                    style={{ cursor: 'pointer', padding: '1.5rem' }}
+                  >
+                    <h3 style={{ fontSize: '1.1rem' }}>{topic.topic}</h3>
+                    <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+                      {topic.lessonCount} lessons in this category
+                    </p>
                     <ChevronRight size={18} style={{ marginTop: '0.5rem', color: '#ccc' }} />
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
+          )}
+
+          {currentView === 'lessons' && (
+            <MotionDiv
+              key="lessons"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <button className="btn" onClick={() => setView('topic')} style={{ marginBottom: '1.5rem', background: 'none' }}>
+                <ArrowLeft size={18} />
+                <span>Back to Categories</span>
+              </button>
+              <h1 style={{ marginBottom: '0.75rem' }}>{selectedTopic}</h1>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
+                {selectedLevel} • {lessonsForTopic.length} lessons ready to teach
+              </p>
+
+              <div className="grid-lessons">
+                {lessonsForTopic.map((lesson) => (
+                  <div
+                    key={lesson.id}
+                    className="card lesson-card"
+                    onClick={() => openLesson(lesson)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start' }}>
+                      <div>
+                        <span className="lesson-chip">{lesson.sequenceLabel}</span>
+                        <h3 style={{ marginTop: '0.85rem' }}>{lesson.title}</h3>
+                        <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>{lesson.objective}</p>
+                      </div>
+                      <BookOpenCheck size={22} color="var(--primary)" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </MotionDiv>
           )}
 
           {currentView === 'lesson' && selectedLesson && (
-            <motion.div 
+            <MotionDiv 
               key="lesson"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <button className="btn no-print" onClick={() => setView('topic')} style={{ marginBottom: '1.5rem', background: 'none' }}>
+              <button className="btn no-print" onClick={() => setView('lessons')} style={{ marginBottom: '1.5rem', background: 'none' }}>
                 <ArrowLeft size={18} />
-                <span>Back to Topics</span>
+                <span>Back to Lessons</span>
               </button>
               <LessonDisplay 
                 lesson={selectedLesson} 
                 onToggleFavorite={toggleFavorite} 
                 isFavorite={favorites.includes(selectedLesson.id)} 
               />
-            </motion.div>
+            </MotionDiv>
           )}
 
           {currentView === 'search' && (
-            <motion.div 
+            <MotionDiv 
               key="search"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -200,17 +285,17 @@ const App = () => {
                   <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>Found {filteredLessons.length} results</p>
                 )}
                 <div style={{ display: 'grid', gap: '1rem' }}>
-                  {filteredLessons.map(lesson => (
+                  {filteredLessons.map((lesson) => (
                     <div 
                       key={lesson.id} 
                       className="card" 
-                      onClick={() => { setSelectedLesson(lesson); setView('lesson'); }}
+                      onClick={() => openLesson(lesson)}
                       style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                     >
                       <div>
                         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>{lesson.level.toUpperCase()}</span>
                         <h3 style={{ marginTop: '0.25rem' }}>{lesson.title}</h3>
-                        <p style={{ fontSize: '0.9rem', color: '#666' }}>{lesson.topic}</p>
+                        <p style={{ fontSize: '0.9rem', color: '#666' }}>{lesson.topic} • {lesson.sequenceLabel}</p>
                       </div>
                       <ChevronRight size={20} color="#ccc" />
                     </div>
@@ -224,31 +309,31 @@ const App = () => {
                   )}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           )}
 
           {currentView === 'favorites' && (
-            <motion.div 
+            <MotionDiv 
               key="favorites"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
               <h1 style={{ marginBottom: '2rem' }}>My Favorites</h1>
               <div style={{ display: 'grid', gap: '1rem' }}>
-                {favorites.map(favId => {
-                  const lesson = lessonsData.find(l => l.id === favId);
+                {favorites.map((favId) => {
+                  const lesson = lessonsData.find((savedLesson) => savedLesson.id === favId);
                   if (!lesson) return null;
                   return (
                     <div 
                       key={lesson.id} 
                       className="card" 
-                      onClick={() => { setSelectedLesson(lesson); setView('lesson'); }}
+                      onClick={() => openLesson(lesson)}
                       style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                     >
                       <div>
                         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>{lesson.level.toUpperCase()}</span>
                         <h3 style={{ marginTop: '0.25rem' }}>{lesson.title}</h3>
-                        <p style={{ fontSize: '0.9rem', color: '#666' }}>{lesson.topic}</p>
+                        <p style={{ fontSize: '0.9rem', color: '#666' }}>{lesson.topic} • {lesson.sequenceLabel}</p>
                       </div>
                       <ChevronRight size={20} color="#ccc" />
                     </div>
@@ -262,11 +347,11 @@ const App = () => {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </MotionDiv>
           )}
 
           {currentView === 'create' && (
-            <motion.div 
+            <MotionDiv 
               key="create"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -285,7 +370,7 @@ const App = () => {
                       onChange={(e) => setCreateLevel(e.target.value)}
                       style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd' }}
                     >
-                      {levels.map(l => <option key={l} value={l}>{l}</option>)}
+                      {levels.map((level) => <option key={level.level} value={level.level}>{level.level}</option>)}
                     </select>
                   </div>
                   
@@ -310,7 +395,7 @@ const App = () => {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
       </main>

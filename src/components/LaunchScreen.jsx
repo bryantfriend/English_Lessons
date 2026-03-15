@@ -4,8 +4,12 @@ import { Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LaunchScreen = ({ onStart }) => {
+  const MotionDiv = motion.div;
+  const MotionImg = motion.img;
+  const MotionButton = motion.button;
+
   return (
-    <motion.div 
+    <MotionDiv 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -25,7 +29,7 @@ const LaunchScreen = ({ onStart }) => {
         textAlign: 'center'
       }}
     >
-      <motion.img 
+      <MotionImg 
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.8 }}
@@ -34,7 +38,7 @@ const LaunchScreen = ({ onStart }) => {
         style={{ maxWidth: '300px', marginBottom: '3rem' }}
       />
       
-      <motion.button 
+      <MotionButton 
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onStart}
@@ -48,8 +52,8 @@ const LaunchScreen = ({ onStart }) => {
       >
         <Play fill="white" size={24} />
         <span>Start Experience</span>
-      </motion.button>
-    </motion.div>
+      </MotionButton>
+    </MotionDiv>
   );
 };
 

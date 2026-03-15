@@ -7,6 +7,7 @@ import {
 import { motion } from 'framer-motion';
 
 const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
+  const MotionDiv = motion.div;
   if (!lesson) return null;
 
   const handlePrint = () => {
@@ -24,7 +25,7 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
   ];
 
   return (
-    <motion.div 
+    <MotionDiv 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="lesson-view"
@@ -32,9 +33,14 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
         <div>
           <span style={{ background: '#eee', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {lesson.level} • {lesson.topic}
+            {lesson.level} • {lesson.topic} • {lesson.sequenceLabel}
           </span>
           <h1 style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>{lesson.title}</h1>
+          {lesson.objective && (
+            <p style={{ marginTop: '0.75rem', maxWidth: '720px', color: 'var(--text-muted)', fontSize: '1rem' }}>
+              {lesson.objective}
+            </p>
+          )}
         </div>
         <div className="no-print" style={{ display: 'flex', gap: '1rem' }}>
           <button className="btn" onClick={() => onToggleFavorite(lesson.id)} style={{ color: isFavorite ? '#ffc107' : '#ccc' }}>
@@ -127,7 +133,7 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
           </section>
         </div>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 

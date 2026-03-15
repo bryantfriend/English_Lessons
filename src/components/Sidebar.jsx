@@ -2,7 +2,7 @@ import React from 'react';
 import { BookOpen, Search, Star, PlusCircle } from 'lucide-react';
 import logo from '../assets/Logo.png';
 
-const Sidebar = ({ currentView, setView, isMobileOpen, setIsMobileOpen }) => {
+const Sidebar = ({ currentView, setView, isMobileOpen }) => {
   const menuItems = [
     { id: 'home', label: 'Start Lesson', icon: BookOpen },
     { id: 'search', label: 'Search Lessons', icon: Search },
