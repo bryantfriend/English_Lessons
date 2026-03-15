@@ -17,7 +17,7 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
   const sections = [
     { id: 'warmup', title: 'Warm-up', icon: Coffee, color: 'warmup', time: '5 min' },
     { id: 'vocabulary', title: 'Vocabulary', icon: Book, color: 'vocabulary', time: '10 min' },
-    { id: 'idioms', title: 'Idioms', icon: MessageSquare, color: 'idioms', time: '10 min' },
+    { id: 'idioms', title: 'Idioms & Expressions', icon: MessageSquare, color: 'idioms', time: '10 min' },
     { id: 'grammar', title: 'Grammar', icon: GraduationCap, color: 'grammar', time: '10 min' },
     { id: 'activities', title: 'Activities', icon: Sparkles, color: 'activities', time: '20 min' },
     { id: 'wrapup', title: 'Wrap-up', icon: CheckCircle, color: 'wrapup', time: '5 min' },
