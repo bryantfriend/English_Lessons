@@ -266,6 +266,39 @@ const CREATIVE_OUTPUTS = [
   'social post',
 ];
 
+const KIDS_ROLEPLAY_PAIRS = [
+  ['a shopkeeper', 'a customer'],
+  ['a team captain', 'a new player'],
+  ['a zookeeper', 'a curious visitor'],
+  ['a class leader', 'a helper'],
+  ['a story hero', 'a sidekick'],
+  ['a weather reporter', 'a camera buddy'],
+  ['a birthday host', 'a party guest'],
+  ['an explorer', 'a map maker'],
+];
+
+const KIDS_CREATIONS = [
+  'treasure map',
+  'hero badge',
+  'mini stage scene',
+  'mystery clue card',
+  'magic machine sketch',
+  'class mascot poster',
+  'funny menu board',
+  'story path comic',
+];
+
+const KIDS_GAME_STYLES = [
+  'freeze-and-say game',
+  'relay race',
+  'memory flip challenge',
+  'spin-and-speak game',
+  'dice mission',
+  'clue hunt',
+  'pass-and-say circle',
+  'point-and-run challenge',
+];
+
 const FALLBACK_THEME = {
   warmups: [
     'What makes this topic interesting in real life?',
@@ -536,6 +569,10 @@ function buildLessonAngle(title, lessonNumber) {
   return `${topic.toLowerCase()} through ${lens}, especially around ${anchor} and ${accent}`;
 }
 
+function getDistinctTopicWords(title) {
+  return [...new Set(extractKeywords(title))].slice(0, 3);
+}
+
 function makeUniqueText(baseText, usedSet, fallbacks) {
   const base = baseText.trim();
   if (!usedSet.has(base.toLowerCase())) {
@@ -645,13 +682,21 @@ function buildActivities(title, lessonNumber, level) {
   const lens = DISCUSSION_LENSES[(lessonNumber - 1) % DISCUSSION_LENSES.length];
 
   if (level.startsWith('Kids')) {
+    const words = getDistinctTopicWords(title);
     const playMode = KIDS_FUN_MODES[(lessonNumber - 1) % KIDS_FUN_MODES.length];
+    const creation = KIDS_CREATIONS[(lessonNumber - 1) % KIDS_CREATIONS.length];
+    const gameStyle = KIDS_GAME_STYLES[(lessonNumber - 1) % KIDS_GAME_STYLES.length];
+    const [firstWord = anchor, secondWord = accent, thirdWord = detail] = words;
+    const cueWords = [...new Set([firstWord, secondWord, thirdWord])].join(', ');
+    const roleA = KIDS_ROLEPLAY_PAIRS[(lessonNumber - 1) % KIDS_ROLEPLAY_PAIRS.length][0];
+    const roleB = KIDS_ROLEPLAY_PAIRS[(lessonNumber - 1) % KIDS_ROLEPLAY_PAIRS.length][1];
+
     return [
-      `${profile.kidsActivities[lessonNumber % profile.kidsActivities.length]} Turn it into a ${playMode} about ${topic.toLowerCase()}.`,
-      `Create a quick roleplay where one student is ${roleA} and another is ${roleB}, and they solve a small ${anchor}-related problem.`,
-      `Teams make a ${output} about ${topic.toLowerCase()} with funny details, bright visuals, and at least three speaking turns.`,
-      `Play a movement challenge where students listen for ${anchor}, ${accent}, or ${detail} and react with the correct action.`,
-      `Finish with a silly story mission: everyone adds one sentence so the class builds a surprising ending around ${topic.toLowerCase()}.`,
+      `${profile.kidsActivities[(lessonNumber - 1) % profile.kidsActivities.length]} Add a ${playMode} ending so everyone gets one exciting speaking turn.`,
+      `Roleplay a mini scene where ${roleA} and ${roleB} need to solve a funny problem connected to ${topic.toLowerCase()} before time runs out.`,
+      `Teams create a ${creation} for ${topic.toLowerCase()} and present it using the clue words ${cueWords} plus one silly extra detail.`,
+      `Play a ${gameStyle} where children listen for the clue words ${cueWords} and react with the right movement, sound, or action.`,
+      `Finish with a class mission: build a tiny story, chant, or performance about ${topic.toLowerCase()} that ends with a surprise twist.`,
     ];
   }
 
