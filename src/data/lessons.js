@@ -233,6 +233,39 @@ const KIDS_FUN_MODES = [
   'mystery bag challenge',
 ];
 
+const DISCUSSION_LENSES = [
+  'a surprising real-life example',
+  'a difficult choice someone might face',
+  'a moment of conflict or tension',
+  'a creative solution to a problem',
+  'a personal memory or dream',
+  'a social impact people often ignore',
+  'a future possibility that feels exciting or worrying',
+  'a hidden challenge behind the topic',
+];
+
+const ROLEPLAY_ROLES = [
+  ['a student', 'a teacher'],
+  ['a parent', 'a child'],
+  ['a journalist', 'an expert'],
+  ['a customer', 'a manager'],
+  ['a traveler', 'a local guide'],
+  ['a coach', 'a player'],
+  ['a designer', 'a client'],
+  ['a team leader', 'a teammate'],
+];
+
+const CREATIVE_OUTPUTS = [
+  'poster',
+  'voice note',
+  'mini campaign',
+  'podcast idea',
+  'classroom pitch',
+  'comic strip',
+  'storyboard',
+  'social post',
+];
+
 const FALLBACK_THEME = {
   warmups: [
     'What makes this topic interesting in real life?',
@@ -444,30 +477,30 @@ function extractKeywords(title) {
 function inferThemeKey(title) {
   const normalized = normalizeTitle(title);
 
-  if (/(family|parent|home)/.test(normalized)) return 'family';
-  if (/(school|classroom|education|learning|student)/.test(normalized)) return 'education';
-  if (/(color|paint)/.test(normalized)) return 'colors';
-  if (/(animal|pet|jungle)/.test(normalized)) return 'animals';
-  if (/(food|snack|meal|cuisine|restaurant)/.test(normalized)) return 'food';
-  if (/(toy|game)/.test(normalized)) return 'toys';
-  if (/(weather|storm|sunny|rain)/.test(normalized)) return 'weather';
-  if (/(playground|recess)/.test(normalized)) return 'playground';
-  if (/(feeling|emotion|happy|sad|fear|stress|mindfulness|mental health|motivation|confidence)/.test(normalized)) return 'feelings';
-  if (/(hobby|free time)/.test(normalized)) return 'hobbies';
-  if (/(friend|trust|relationship|communication)/.test(normalized)) return 'friends';
-  if (/(birthday|party)/.test(normalized)) return 'birthday';
-  if (/(travel|trip|transportation|tourism|space tourism)/.test(normalized)) return 'travel';
-  if (/(sport|teamwork|e sports|gaming)/.test(normalized)) return 'sports';
-  if (/(story|movie|cinema|book|music|art|fashion)/.test(normalized)) return 'story';
-  if (/(science|robot|artificial intelligence|technology|digital|privacy|automation)/.test(normalized)) return 'technology';
-  if (/(job|career|work|entrepreneurship|gig economy|leadership)/.test(normalized)) return 'jobs';
-  if (/(media|news|influencers|advertising|misinformation)/.test(normalized)) return 'media';
-  if (/(culture|festival|tradition|language|globalization|stereotypes|taboos)/.test(normalized)) return 'culture';
-  if (/(climate|environment|plastic|energy|sustainability)/.test(normalized)) return 'environment';
-  if (/(finance|consumerism|poverty|inequality)/.test(normalized)) return 'money';
-  if (/(city|urban|rural|cities|development)/.test(normalized)) return 'city';
-  if (/(psychology|decision|growth|resilience|success|discipline)/.test(normalized)) return 'psychology';
-  if (/(ethic|moral|censorship|freedom|crime|punishment|vaccines)/.test(normalized)) return 'ethics';
+  if (/\b(family|parent|home)\b/.test(normalized)) return 'family';
+  if (/\b(school|classroom|education|learning|student)\b/.test(normalized)) return 'education';
+  if (/\b(color|colors|paint)\b/.test(normalized)) return 'colors';
+  if (/\b(animal|animals|pet|pets|jungle)\b/.test(normalized)) return 'animals';
+  if (/\b(food|snack|snacks|meal|cuisine|restaurant)\b/.test(normalized)) return 'food';
+  if (/\b(toy|toys)\b/.test(normalized)) return 'toys';
+  if (/\b(weather|storm|sunny|rain)\b/.test(normalized)) return 'weather';
+  if (/\b(playground|recess)\b/.test(normalized)) return 'playground';
+  if (/\b(feeling|feelings|emotion|emotions|happy|sad|fear|stress|mindfulness|motivation|confidence)\b|mental health/.test(normalized)) return 'feelings';
+  if (/\b(hobby|hobbies)\b|free time/.test(normalized)) return 'hobbies';
+  if (/\b(friend|friends|trust|relationship|relationships|communication)\b/.test(normalized)) return 'friends';
+  if (/\b(birthday|party|parties)\b/.test(normalized)) return 'birthday';
+  if (/\b(travel|trip|transportation|tourism)\b|space tourism/.test(normalized)) return 'travel';
+  if (/\b(sport|sports|teamwork|gaming)\b|e sports/.test(normalized)) return 'sports';
+  if (/\b(science|robot|robots|technology|digital|privacy|automation)\b|artificial intelligence/.test(normalized)) return 'technology';
+  if (/\b(story|stories|movie|movies|cinema|book|books|music|art|fashion)\b/.test(normalized)) return 'story';
+  if (/\b(job|jobs|career|work|entrepreneurship|leadership)\b|gig economy/.test(normalized)) return 'jobs';
+  if (/\b(media|news|influencers|advertising|misinformation)\b/.test(normalized)) return 'media';
+  if (/\b(culture|festival|festivals|tradition|traditions|language|globalization|stereotypes|taboos)\b/.test(normalized)) return 'culture';
+  if (/\b(climate|environment|plastic|energy|sustainability)\b/.test(normalized)) return 'environment';
+  if (/\b(finance|consumerism|poverty|inequality)\b/.test(normalized)) return 'money';
+  if (/\b(city|cities|urban|rural|development)\b/.test(normalized)) return 'city';
+  if (/\b(psychology|decision|growth|resilience|success|discipline)\b/.test(normalized)) return 'psychology';
+  if (/\b(ethic|ethics|moral|censorship|freedom|crime|punishment|vaccines)\b/.test(normalized)) return 'ethics';
   return null;
 }
 
@@ -481,6 +514,26 @@ function toTitleCase(value) {
     .split(' ')
     .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
     .join(' ');
+}
+
+function stripUnitNumber(title) {
+  return title.replace(/\s+\d+$/, '');
+}
+
+function getTopicAnchors(title) {
+  const keywords = extractKeywords(title);
+  return {
+    topic: stripUnitNumber(title),
+    anchor: keywords[0] ?? 'topic',
+    accent: keywords[1] ?? keywords[0] ?? 'idea',
+    detail: keywords[2] ?? keywords[1] ?? keywords[0] ?? 'experience',
+  };
+}
+
+function buildLessonAngle(title, lessonNumber) {
+  const { topic, anchor, accent } = getTopicAnchors(title);
+  const lens = DISCUSSION_LENSES[(lessonNumber - 1) % DISCUSSION_LENSES.length];
+  return `${topic.toLowerCase()} through ${lens}, especially around ${anchor} and ${accent}`;
 }
 
 function makeUniqueText(baseText, usedSet, fallbacks) {
@@ -511,9 +564,7 @@ function makeUniqueText(baseText, usedSet, fallbacks) {
 
 function buildVocabulary(title, lessonNumber, usedVocabulary) {
   const profile = getThemeProfile(title);
-  const keywords = extractKeywords(title);
-  const anchor = keywords[0] ?? 'topic';
-  const accent = keywords[1] ?? keywords[0] ?? 'idea';
+  const { anchor, accent, detail } = getTopicAnchors(title);
   const lessonSlug = slugify(title).replace(/-\d+$/, '');
   const pool = profile.vocabulary;
 
@@ -530,18 +581,16 @@ function buildVocabulary(title, lessonNumber, usedVocabulary) {
     return {
       word: toTitleCase(uniqueWord),
       difficulty: index === 0 ? '⭐' : index === 1 ? '⭐⭐' : '⭐⭐⭐',
-      definition: `Language for discussing ${title.toLowerCase()} with more detail and personality.`,
-      example: `A strong speaker might mention "${uniqueWord}" when talking about ${title.toLowerCase()}.`,
-      question: `How could you use "${uniqueWord}" in your own idea about ${title.toLowerCase()}?`,
+      definition: `Useful language for discussing ${stripUnitNumber(title).toLowerCase()} in a more vivid, specific way.`,
+      example: `For example: "The ${uniqueWord} completely changed how people saw ${anchor} and ${detail}."`,
+      question: `How could you connect "${uniqueWord}" to a strong idea about ${stripUnitNumber(title).toLowerCase()}?`,
     };
   });
 }
 
 function buildIdioms(title, lessonNumber, usedIdioms) {
   const profile = getThemeProfile(title);
-  const keywords = extractKeywords(title);
-  const anchor = keywords[0] ?? 'topic';
-  const accent = keywords[1] ?? 'life';
+  const { anchor, accent } = getTopicAnchors(title);
   const pool = profile.idioms;
 
   return Array.from({ length: 2 }, (_, index) => {
@@ -555,8 +604,8 @@ function buildIdioms(title, lessonNumber, usedIdioms) {
     return {
       idiom: toTitleCase(tailored),
       meaning: `An expression that helps students talk naturally about ${title.toLowerCase()}.`,
-      example: `Use "${tailored}" when the discussion turns to ${title.toLowerCase()} and real-life choices.`,
-      question: `When would "${tailored}" fit a real conversation about ${title.toLowerCase()}?`,
+      example: `Use "${tailored}" when the discussion turns to ${anchor}, ${accent}, or a tricky real-world situation.`,
+      question: `When would "${tailored}" sound natural in a real conversation about ${stripUnitNumber(title).toLowerCase()}?`,
     };
   });
 }
@@ -565,46 +614,60 @@ function buildGrammar(title, lessonNumber) {
   const profile = getThemeProfile(title);
   const pool = profile.grammar ?? DEFAULT_GRAMMAR;
   const grammarTitle = pool[(lessonNumber - 1) % pool.length];
+  const { anchor, detail } = getTopicAnchors(title);
 
   return {
     title: toTitleCase(grammarTitle),
-    explanation: `Lesson ${lessonNumber} uses ${grammarTitle} to make discussion about ${title.toLowerCase()} clearer and more precise.`,
-    example: `Students use ${grammarTitle} while giving opinions and examples about ${title.toLowerCase()}.`,
-    question: `Can you build one strong sentence about ${title.toLowerCase()} using ${grammarTitle}?`,
+    explanation: `Lesson ${lessonNumber} uses ${grammarTitle} so students can talk about ${stripUnitNumber(title).toLowerCase()} with clearer opinions, reasons, and examples.`,
+    example: `Example focus: students explain how ${anchor} can shape ${detail} while using ${grammarTitle}.`,
+    question: `Can you build one strong sentence about ${stripUnitNumber(title).toLowerCase()} using ${grammarTitle}?`,
   };
 }
 
 function buildWarmup(title, lessonNumber, level) {
   const profile = getThemeProfile(title);
   const prompt = profile.warmups[lessonNumber % profile.warmups.length];
+  const angle = buildLessonAngle(title, lessonNumber);
 
   if (level.startsWith('Kids')) {
-    return `${prompt} Give one fun example or act it out in a silly way.`;
+    return `${prompt} Make it playful by acting out or drawing one part of ${stripUnitNumber(title).toLowerCase()}.`;
   }
 
-  return `${prompt} Give a specific example, not just a general opinion.`;
+  return `${prompt} Focus on ${angle} instead of giving only a general opinion.`;
 }
 
 function buildActivities(title, lessonNumber, level) {
   const profile = getThemeProfile(title);
-  const baseActivities = level.startsWith('Kids') ? profile.kidsActivities : profile.adultActivities;
+  const { topic, anchor, accent, detail } = getTopicAnchors(title);
+  const roleA = ROLEPLAY_ROLES[(lessonNumber - 1) % ROLEPLAY_ROLES.length][0];
+  const roleB = ROLEPLAY_ROLES[(lessonNumber - 1) % ROLEPLAY_ROLES.length][1];
+  const output = CREATIVE_OUTPUTS[(lessonNumber - 1) % CREATIVE_OUTPUTS.length];
+  const lens = DISCUSSION_LENSES[(lessonNumber - 1) % DISCUSSION_LENSES.length];
 
-  return Array.from({ length: 5 }, (_, index) => {
-    const seed = baseActivities[(lessonNumber + index) % baseActivities.length];
+  if (level.startsWith('Kids')) {
+    const playMode = KIDS_FUN_MODES[(lessonNumber - 1) % KIDS_FUN_MODES.length];
+    return [
+      `${profile.kidsActivities[lessonNumber % profile.kidsActivities.length]} Turn it into a ${playMode} about ${topic.toLowerCase()}.`,
+      `Create a quick roleplay where one student is ${roleA} and another is ${roleB}, and they solve a small ${anchor}-related problem.`,
+      `Teams make a ${output} about ${topic.toLowerCase()} with funny details, bright visuals, and at least three speaking turns.`,
+      `Play a movement challenge where students listen for ${anchor}, ${accent}, or ${detail} and react with the correct action.`,
+      `Finish with a silly story mission: everyone adds one sentence so the class builds a surprising ending around ${topic.toLowerCase()}.`,
+    ];
+  }
 
-    if (level.startsWith('Kids')) {
-      const mode = KIDS_FUN_MODES[(lessonNumber + index) % KIDS_FUN_MODES.length];
-      return `${seed} Turn it into a ${mode} so everyone speaks, moves, or creates something.`;
-    }
-
-    return `${seed} Push students to connect the topic to real situations, choices, or consequences.`;
-  });
+  return [
+    `${profile.adultActivities[lessonNumber % profile.adultActivities.length]} Make students connect it to ${topic.toLowerCase()} and ${lens}.`,
+    `Roleplay a conversation between ${roleA} and ${roleB} where they disagree about ${stripUnitNumber(title).toLowerCase()} but still need a workable decision.`,
+    `Students design a short ${output} that captures one hidden tension around ${anchor}, ${accent}, or ${detail}.`,
+    `Run a mini debate on whether ${stripUnitNumber(title).toLowerCase()} creates more opportunity or more pressure, and require concrete examples.`,
+    `Close with an interview task where students ask each other one personal question and one big-picture question about ${topic.toLowerCase()}.`,
+  ];
 }
 
 function buildWrapup(title, lessonNumber) {
   const profile = getThemeProfile(title);
   const prompt = profile.wrapups[lessonNumber % profile.wrapups.length];
-  return `${prompt} Tie it back to ${title.toLowerCase()}.`;
+  return `${prompt} Tie it back to ${buildLessonAngle(title, lessonNumber)}.`;
 }
 
 function buildTeacherTips(title, level) {
@@ -623,6 +686,7 @@ function buildTeacherTips(title, level) {
 
 function buildLesson(levelConfig, title, lessonNumber, usedVocabulary, usedIdioms) {
   const focus = LESSON_FOCUSES[(lessonNumber - 1) % LESSON_FOCUSES.length];
+  const angle = buildLessonAngle(title, lessonNumber);
 
   return {
     id: `${slugify(levelConfig.level)}-${String(lessonNumber).padStart(3, '0')}`,
@@ -632,7 +696,7 @@ function buildLesson(levelConfig, title, lessonNumber, usedVocabulary, usedIdiom
     sequence: lessonNumber,
     sequenceLabel: `Lesson ${lessonNumber}`,
     audience: levelConfig.audience,
-    objective: `Explore ${title.toLowerCase()} while ${focus}.`,
+    objective: `Explore ${angle} while ${focus}.`,
     warmup: buildWarmup(title, lessonNumber, levelConfig.level),
     vocabulary: buildVocabulary(title, lessonNumber, usedVocabulary),
     idioms: buildIdioms(title, lessonNumber, usedIdioms),
