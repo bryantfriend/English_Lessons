@@ -197,29 +197,6 @@ const DEFAULT_GRAMMAR = [
   'discourse markers for opinion',
 ];
 
-const VOCAB_SUFFIXES = [
-  'mindset',
-  'routine',
-  'challenge',
-  'habit',
-  'choice',
-  'pattern',
-  'strategy',
-  'moment',
-  'perspective',
-  'signal',
-  'spark',
-  'shift',
-  'goal',
-  'skill',
-  'tool',
-  'story',
-  'detail',
-  'rhythm',
-  'connection',
-  'breakthrough',
-];
-
 const KIDS_FUN_MODES = [
   'charades round',
   'treasure hunt',
@@ -305,7 +282,7 @@ const FALLBACK_THEME = {
     'Where do you notice this topic around you?',
     'What is one strong opinion you already have about this topic?',
   ],
-  vocabulary: ['insight', 'turning point', 'real-world angle', 'hidden pressure', 'new perspective', 'practical choice'],
+  vocabulary: ['insight', 'choice', 'challenge', 'pattern', 'detail', 'impact'],
   idioms: ['find your footing', 'see the bigger picture', 'open a new door', 'shift the balance', 'draw a clear line', 'change the game'],
   grammar: DEFAULT_GRAMMAR,
   adultActivities: [
@@ -340,145 +317,145 @@ function themeProfile(overrides) {
 
 const THEME_PROFILES = {
   family: themeProfile({
-    vocabulary: ['family tradition', 'sibling promise', 'weekend routine', 'home teamwork', 'birthday memory', 'family snapshot'],
+    vocabulary: ['tradition', 'sibling', 'routine', 'home', 'memory', 'snapshot'],
     idioms: ['home is where the heart is', 'all in the family', 'stick together through thick and thin', 'lend a hand at home'],
     warmups: ['Who makes your home feel fun, calm, or interesting?', 'What is one family habit you would never want to lose?'],
     kidsActivities: ['Students build a paper family tree and introduce one person with a fun fact.', 'Pairs use puppets or toy voices to act out a family conversation.'],
   }),
   education: themeProfile({
-    vocabulary: ['classroom routine', 'group project', 'homework planner', 'reading corner', 'science table', 'school memory'],
+    vocabulary: ['routine', 'project', 'homework', 'reading', 'classroom', 'memory'],
     idioms: ['learn the ropes', 'top of the class', 'hit the books', 'pass with flying colors'],
     warmups: ['What part of the school day feels fastest and what part feels slowest?', 'If you could redesign one classroom rule, what would it be?'],
     kidsActivities: ['Run a pretend teacher game where students give funny but clear classroom instructions.', 'Teams race to organize picture cards into a perfect school day order.'],
   }),
   colors: themeProfile({
-    vocabulary: ['color splash', 'rainbow shade', 'paint mix', 'bright pattern', 'favorite hue', 'art wall'],
+    vocabulary: ['color', 'rainbow', 'paint', 'pattern', 'hue', 'shade'],
     idioms: ['paint the town red', 'green with envy', 'see life in color', 'true colors'],
     kidsActivities: ['Play a color hunt where children race to point at objects around the room.', 'Students invent a superhero whose powers come from one color.'],
   }),
   animals: themeProfile({
-    vocabulary: ['animal shelter', 'jungle trail', 'pet trick', 'wild habitat', 'soft paw', 'night safari'],
+    vocabulary: ['shelter', 'jungle', 'trick', 'habitat', 'paw', 'safari'],
     idioms: ['busy as a bee', 'copycat', 'let the cat out of the bag', 'eagle eye'],
     kidsActivities: ['Students do animal walks across the room and classmates guess the animal.', 'Play a sound-and-motion challenge using pets, farm animals, and jungle animals.'],
   }),
   food: themeProfile({
-    vocabulary: ['street snack', 'flavor mix', 'family recipe', 'spice level', 'shared meal', 'kitchen secret'],
+    vocabulary: ['snack', 'flavor', 'recipe', 'spice', 'meal', 'kitchen'],
     idioms: ['piece of cake', 'spill the beans', 'full of beans', 'bring home the bacon'],
     warmups: ['What food instantly changes your mood?', 'What meal tells a story about your family or culture?'],
     adultActivities: ['Students design a dream menu for a themed restaurant and explain every choice.', 'Pairs compare two food traditions and decide which would surprise a visitor more.'],
     kidsActivities: ['Create a pretend restaurant with silly menu items and roleplay customer orders.', 'Use picture cards to build the funniest balanced lunchbox possible.'],
   }),
   toys: themeProfile({
-    vocabulary: ['toy shelf', 'building blocks', 'puzzle piece', 'favorite gadget', 'pretend quest', 'game rules'],
+    vocabulary: ['toy', 'blocks', 'puzzle', 'gadget', 'quest', 'rules'],
     idioms: ['level up', 'in the game', 'play it by ear', 'move the pieces'],
     kidsActivities: ['Students invent a brand-new toy and give it powers, rules, and a name.', 'Play a mystery toy bag game using clues before the reveal.'],
   }),
   weather: themeProfile({
-    vocabulary: ['rainy morning', 'storm cloud', 'sunny break', 'windy day', 'forecast chart', 'umbrella plan'],
+    vocabulary: ['rain', 'storm', 'sunshine', 'wind', 'forecast', 'umbrella'],
     idioms: ['come rain or shine', 'under the weather', 'weather the storm', 'brighten the day'],
     adultActivities: ['Students plan an event that must survive wild weather changes.', 'Pairs compare how weather affects mood, energy, and plans in different places.'],
     kidsActivities: ['Do a weather dance where each movement matches sun, rain, wind, or snow.', 'Students become TV weather reporters and present a funny forecast.'],
   }),
   playground: themeProfile({
-    vocabulary: ['slide turn', 'swing race', 'tag game', 'team cheer', 'playground rule', 'recess plan'],
+    vocabulary: ['slide', 'swing', 'tag', 'cheer', 'playground', 'recess'],
     idioms: ['jump right in', 'take turns', 'play fair', 'keep the game going'],
     kidsActivities: ['Children invent a brand-new playground game and teach the class the rules.', 'Use cones or paper markers for a mini obstacle course speaking challenge.'],
   }),
   feelings: themeProfile({
-    vocabulary: ['happy dance', 'calm corner', 'butterfly feeling', 'brave breath', 'kind smile', 'stormy mood'],
+    vocabulary: ['joy', 'calm', 'nervous', 'brave', 'kindness', 'mood'],
     idioms: ['on cloud nine', 'butterflies in your stomach', 'keep your chin up', 'heart full of joy'],
     kidsActivities: ['Students pull an emotion card and act it out with face, voice, and movement.', 'Create an emotions wheel and spin it to tell a short story.'],
     teacherTips: ['Name and model feelings clearly, then let students copy the sentence pattern.', 'Use drawings, faces, and movement so children connect words to emotion quickly.', 'Celebrate small answers so shy students feel safe joining in.'],
   }),
   hobbies: themeProfile({
-    vocabulary: ['creative hobby', 'weekend project', 'practice streak', 'quiet hobby', 'outdoor hobby', 'skill swap'],
+    vocabulary: ['hobby', 'project', 'practice', 'weekend', 'outdoors', 'skill'],
     idioms: ['have a blast', 'find your groove', 'do your own thing', 'keep the fun rolling'],
   }),
   friends: themeProfile({
-    vocabulary: ['trust circle', 'secret handshake', 'loyal friend', 'inside joke', 'kind choice', 'team spirit'],
+    vocabulary: ['trust', 'handshake', 'loyalty', 'joke', 'kindness', 'friendship'],
     idioms: ['stick together', 'have each other’s back', 'meet halfway', 'break the ice'],
     kidsActivities: ['Pairs create a friendship badge and explain what makes a great teammate.', 'Play a compliment toss game with a soft ball or paper ball.'],
   }),
   birthday: themeProfile({
-    vocabulary: ['party hat', 'birthday wish', 'surprise plan', 'cake table', 'party guest', 'gift clue'],
+    vocabulary: ['party', 'wish', 'surprise', 'cake', 'guest', 'gift'],
     idioms: ['the life of the party', 'make a wish', 'light up the room', 'save the best for last'],
     kidsActivities: ['Students plan the funniest birthday party theme and present it like a TV ad.', 'Run a party invitation roleplay with secret surprise rules.'],
   }),
   travel: themeProfile({
-    vocabulary: ['travel journal', 'hidden alley', 'passport stamp', 'window seat', 'local custom', 'missed connection'],
+    vocabulary: ['journey', 'passport', 'custom', 'window', 'route', 'adventure'],
     idioms: ['hit the road', 'off the beaten path', 'catch the travel bug', 'pack light, dream big'],
     warmups: ['What place changed the way you see the world?', 'What kind of trip creates the best stories later?'],
     adultActivities: ['Students compare two trip plans and defend which would create better memories.', 'Pairs roleplay a traveler convincing a skeptical friend to join an unusual journey.'],
     kidsActivities: ['Turn the room into an airport or train station and roleplay a mini trip.', 'Children create a map to an imaginary place and explain what happens there.'],
   }),
   sports: themeProfile({
-    vocabulary: ['team huddle', 'winning streak', 'practice drill', 'fair play', 'game plan', 'final whistle'],
+    vocabulary: ['teamwork', 'streak', 'practice', 'fairness', 'strategy', 'whistle'],
     idioms: ['keep your eye on the ball', 'in the running', 'step up to the plate', 'play your heart out'],
     kidsActivities: ['Students invent a crazy new sport with three funny rules and one challenge.', 'Use a soft ball for a quick question-and-catch speaking game.'],
   }),
   story: themeProfile({
-    vocabulary: ['plot twist', 'main character', 'cliffhanger ending', 'magic object', 'story clue', 'hero choice'],
+    vocabulary: ['plot', 'character', 'cliffhanger', 'magic', 'clue', 'hero'],
     idioms: ['turn the page', 'happy ending', 'steal the scene', 'tell the whole story'],
     adultActivities: ['Students retell a short story from the villain’s point of view.', 'Pairs build a three-part story using random prompts and one required emotion.'],
     kidsActivities: ['Story circle: each child adds one silly sentence to continue the adventure.', 'Students draw a mystery character and invent the character’s secret mission.'],
   }),
   science: themeProfile({
-    vocabulary: ['rocket launch', 'lab discovery', 'curious question', 'tiny magnet', 'bubble reaction', 'science clue'],
+    vocabulary: ['rocket', 'discovery', 'question', 'magnet', 'reaction', 'science'],
     idioms: ['light-bulb moment', 'blast off', 'test the waters', 'spark an idea'],
     kidsActivities: ['Do a prediction game before a simple science demo or pretend experiment.', 'Students become young scientists and explain a funny invention.'],
   }),
   dreams: themeProfile({
-    vocabulary: ['dream board', 'future plan', 'big goal', 'bold step', 'secret wish', 'next chapter'],
+    vocabulary: ['dream', 'future', 'goal', 'courage', 'wish', 'plan'],
     idioms: ['reach for the stars', 'follow your dream', 'aim high', 'make it happen'],
   }),
   health: themeProfile({
-    vocabulary: ['energy boost', 'sleep routine', 'healthy swap', 'stress signal', 'mindful break', 'daily movement'],
+    vocabulary: ['energy', 'sleep', 'health', 'stress', 'balance', 'movement'],
     idioms: ['back on your feet', 'feel in top shape', 'listen to your body', 'keep balance'],
     warmups: ['What healthy habit actually feels realistic in a busy week?', 'When does self-care feel easy, and when does it feel hard?'],
   }),
   jobs: themeProfile({
-    vocabulary: ['dream role', 'career path', 'team leader', 'workplace skill', 'job interview', 'office challenge'],
+    vocabulary: ['career', 'leader', 'skill', 'interview', 'office', 'responsibility'],
     idioms: ['climb the ladder', 'learn the ropes', 'call the shots', 'wear many hats'],
   }),
   entertainment: themeProfile({
-    vocabulary: ['crowd reaction', 'favorite scene', 'backstage moment', 'soundtrack choice', 'fan theory', 'spotlight moment'],
+    vocabulary: ['audience', 'scene', 'backstage', 'soundtrack', 'theory', 'spotlight'],
     idioms: ['in the spotlight', 'steal the show', 'set the scene', 'raise the curtain'],
   }),
   shopping: themeProfile({
-    vocabulary: ['impulse buy', 'smart bargain', 'shopping list', 'price tag', 'wish item', 'store display'],
+    vocabulary: ['bargain', 'budget', 'receipt', 'price', 'wishlist', 'display'],
     idioms: ['shop around', 'cost an arm and a leg', 'worth every penny', 'window shopping'],
   }),
   technology: themeProfile({
-    vocabulary: ['smart device', 'screen habit', 'digital shortcut', 'privacy setting', 'future tool', 'notification overload'],
+    vocabulary: ['device', 'screen', 'shortcut', 'privacy', 'innovation', 'notification'],
     idioms: ['change the game', 'push the button', 'stay one step ahead', 'plug into the future'],
     warmups: ['What piece of technology quietly shapes your routine the most?', 'Where is technology helping us, and where is it getting too close?'],
   }),
   media: themeProfile({
-    vocabulary: ['media narrative', 'headline bias', 'public reaction', 'viral clip', 'source check', 'attention economy'],
+    vocabulary: ['headline', 'bias', 'reaction', 'viral', 'source', 'attention'],
     idioms: ['read between the lines', 'make headlines', 'frame the story', 'shift the narrative'],
   }),
   culture: themeProfile({
-    vocabulary: ['cultural ritual', 'shared symbol', 'local custom', 'festival rhythm', 'social norm', 'heritage link'],
+    vocabulary: ['ritual', 'symbol', 'custom', 'festival', 'norm', 'heritage'],
     idioms: ['small world', 'walk in someone else’s shoes', 'cross a bridge', 'open a new door'],
   }),
   environment: themeProfile({
-    vocabulary: ['carbon footprint', 'cleanup effort', 'green habit', 'wild coastline', 'plastic trail', 'energy shift'],
+    vocabulary: ['climate', 'cleanup', 'recycling', 'coastline', 'plastic', 'energy'],
     idioms: ['go green', 'tip of the iceberg', 'turn the tide', 'leave a lighter footprint'],
   }),
   money: themeProfile({
-    vocabulary: ['budget plan', 'saving habit', 'money leak', 'smart investment', 'shared expense', 'financial cushion'],
+    vocabulary: ['budget', 'saving', 'expense', 'investment', 'income', 'finance'],
     idioms: ['save for a rainy day', 'make ends meet', 'money talks', 'stretch your budget'],
   }),
   city: themeProfile({
-    vocabulary: ['busy skyline', 'public square', 'rush-hour crowd', 'quiet suburb', 'local corner', 'city rhythm'],
+    vocabulary: ['skyline', 'square', 'traffic', 'suburb', 'corner', 'city'],
     idioms: ['a city that never sleeps', 'move with the crowd', 'find your corner', 'build from the ground up'],
   }),
   psychology: themeProfile({
-    vocabulary: ['inner drive', 'mental pattern', 'choice trigger', 'stress response', 'self-talk', 'mindset shift'],
+    vocabulary: ['motivation', 'pattern', 'trigger', 'response', 'mindset', 'focus'],
     idioms: ['mind over matter', 'change your tune', 'get inside your own head', 'see the bigger picture'],
   }),
   ethics: themeProfile({
-    vocabulary: ['moral gray zone', 'ethical choice', 'public trust', 'hard trade-off', 'personal principle', 'social cost'],
+    vocabulary: ['ethics', 'choice', 'trust', 'principle', 'justice', 'consequence'],
     idioms: ['cross the line', 'draw a clear line', 'do the right thing', 'weigh the cost'],
   }),
 };
@@ -554,7 +531,7 @@ function stripUnitNumber(title) {
 }
 
 function getTopicAnchors(title) {
-  const keywords = extractKeywords(title);
+  const keywords = [...new Set(extractKeywords(title))];
   return {
     topic: stripUnitNumber(title),
     anchor: keywords[0] ?? 'topic',
@@ -573,76 +550,48 @@ function getDistinctTopicWords(title) {
   return [...new Set(extractKeywords(title))].slice(0, 3);
 }
 
-function makeUniqueText(baseText, usedSet, fallbacks) {
-  const base = baseText.trim();
-  if (!usedSet.has(base.toLowerCase())) {
-    usedSet.add(base.toLowerCase());
-    return base;
+function buildVocabularyContext(title) {
+  const words = getDistinctTopicWords(title);
+  if (words.length >= 3) {
+    return `${words[0]}, ${words[1]}, or ${words[2]}`;
   }
-
-  for (const fallback of fallbacks) {
-    const candidate = fallback.trim();
-    if (!usedSet.has(candidate.toLowerCase())) {
-      usedSet.add(candidate.toLowerCase());
-      return candidate;
-    }
+  if (words.length === 2) {
+    return `${words[0]} or ${words[1]}`;
   }
-
-  let counter = 2;
-  while (true) {
-    const candidate = `${base} ${counter}`;
-    if (!usedSet.has(candidate.toLowerCase())) {
-      usedSet.add(candidate.toLowerCase());
-      return candidate;
-    }
-    counter += 1;
+  if (words.length === 1) {
+    return words[0];
   }
+  return stripUnitNumber(title).toLowerCase();
 }
 
-function buildVocabulary(title, lessonNumber, usedVocabulary) {
+function buildVocabulary(title, lessonNumber) {
   const profile = getThemeProfile(title);
-  const { anchor, accent, detail } = getTopicAnchors(title);
-  const lessonSlug = slugify(title).replace(/-\d+$/, '');
   const pool = profile.vocabulary;
+  const context = buildVocabularyContext(title);
 
   return Array.from({ length: 3 }, (_, index) => {
-    const seed = pool[(lessonNumber + index) % pool.length];
-    const suffix = VOCAB_SUFFIXES[(lessonNumber * 3 + index) % VOCAB_SUFFIXES.length];
-    const baseWord = `${seed} ${suffix}`;
-    const uniqueWord = makeUniqueText(baseWord, usedVocabulary, [
-      `${anchor} ${seed}`,
-      `${accent} ${seed}`,
-      `${lessonSlug} ${seed}`,
-    ]);
+    const word = pool[(lessonNumber + index - 1) % pool.length];
 
     return {
-      word: toTitleCase(uniqueWord),
-      difficulty: index === 0 ? '⭐' : index === 1 ? '⭐⭐' : '⭐⭐⭐',
-      definition: `Useful language for discussing ${stripUnitNumber(title).toLowerCase()} in a more vivid, specific way.`,
-      example: `For example: "The ${uniqueWord} completely changed how people saw ${anchor} and ${detail}."`,
-      question: `How could you connect "${uniqueWord}" to a strong idea about ${stripUnitNumber(title).toLowerCase()}?`,
+      word: toTitleCase(word),
+      definition: `A useful word for talking about ${stripUnitNumber(title).toLowerCase()}, especially when discussing ${context}.`,
     };
   });
 }
 
-function buildIdioms(title, lessonNumber, usedIdioms) {
+function buildIdioms(title, lessonNumber) {
   const profile = getThemeProfile(title);
   const { anchor, accent } = getTopicAnchors(title);
   const pool = profile.idioms;
 
   return Array.from({ length: 2 }, (_, index) => {
-    const seed = pool[(lessonNumber + index) % pool.length];
-    const tailored = makeUniqueText(seed, usedIdioms, [
-      `${seed} in ${anchor}`,
-      `${seed} around ${accent}`,
-      `${seed} for ${slugify(title).replace(/-/g, ' ')}`,
-    ]);
+    const idiom = pool[(lessonNumber + index - 1) % pool.length];
 
     return {
-      idiom: toTitleCase(tailored),
-      meaning: `An expression that helps students talk naturally about ${title.toLowerCase()}.`,
-      example: `Use "${tailored}" when the discussion turns to ${anchor}, ${accent}, or a tricky real-world situation.`,
-      question: `When would "${tailored}" sound natural in a real conversation about ${stripUnitNumber(title).toLowerCase()}?`,
+      idiom: toTitleCase(idiom),
+      meaning: `An idiom that fits discussion about ${stripUnitNumber(title).toLowerCase()}.`,
+      example: `Use "${idiom}" when talking about ${anchor}, ${accent}, or a realistic situation connected to the topic.`,
+      question: `When would "${idiom}" sound natural in a real conversation about ${stripUnitNumber(title).toLowerCase()}?`,
     };
   });
 }
@@ -701,11 +650,11 @@ function buildActivities(title, lessonNumber, level) {
   }
 
   return [
-    `${profile.adultActivities[lessonNumber % profile.adultActivities.length]} Make students connect it to ${topic.toLowerCase()} and ${lens}.`,
-    `Roleplay a conversation between ${roleA} and ${roleB} where they disagree about ${stripUnitNumber(title).toLowerCase()} but still need a workable decision.`,
-    `Students design a short ${output} that captures one hidden tension around ${anchor}, ${accent}, or ${detail}.`,
-    `Run a mini debate on whether ${stripUnitNumber(title).toLowerCase()} creates more opportunity or more pressure, and require concrete examples.`,
-    `Close with an interview task where students ask each other one personal question and one big-picture question about ${topic.toLowerCase()}.`,
+    `${profile.adultActivities[lessonNumber % profile.adultActivities.length]} Make students connect it to ${topic.toLowerCase()} through ${lens}.`,
+    `Roleplay a conversation between ${roleA} and ${roleB} where they disagree about ${stripUnitNumber(title).toLowerCase()} and must reach a realistic decision.`,
+    `Students create a short ${output} that highlights one hidden tension involving ${anchor}, ${accent}, or ${detail}.`,
+    `Use a scenario task: something unexpected changes around ${stripUnitNumber(title).toLowerCase()}, and students explain how they would respond and why.`,
+    `Finish with a partner interview where students ask one personal question, one practical question, and one big-picture question about ${topic.toLowerCase()}.`,
   ];
 }
 
@@ -729,7 +678,7 @@ function buildTeacherTips(title, level) {
   return profile.teacherTips;
 }
 
-function buildLesson(levelConfig, title, lessonNumber, usedVocabulary, usedIdioms) {
+function buildLesson(levelConfig, title, lessonNumber) {
   const focus = LESSON_FOCUSES[(lessonNumber - 1) % LESSON_FOCUSES.length];
   const angle = buildLessonAngle(title, lessonNumber);
 
@@ -743,8 +692,8 @@ function buildLesson(levelConfig, title, lessonNumber, usedVocabulary, usedIdiom
     audience: levelConfig.audience,
     objective: `Explore ${angle} while ${focus}.`,
     warmup: buildWarmup(title, lessonNumber, levelConfig.level),
-    vocabulary: buildVocabulary(title, lessonNumber, usedVocabulary),
-    idioms: buildIdioms(title, lessonNumber, usedIdioms),
+    vocabulary: buildVocabulary(title, lessonNumber),
+    idioms: buildIdioms(title, lessonNumber),
     grammar: buildGrammar(title, lessonNumber),
     activities: buildActivities(title, lessonNumber, levelConfig.level),
     wrapup: buildWrapup(title, lessonNumber),
@@ -752,13 +701,8 @@ function buildLesson(levelConfig, title, lessonNumber, usedVocabulary, usedIdiom
   };
 }
 
-const usedVocabulary = new Set();
-const usedIdioms = new Set();
-
 const lessons = LEVEL_CONFIGS.flatMap((levelConfig) =>
-  levelConfig.lessonTitles.map((title, index) =>
-    buildLesson(levelConfig, title, index + 1, usedVocabulary, usedIdioms),
-  ),
+  levelConfig.lessonTitles.map((title, index) => buildLesson(levelConfig, title, index + 1)),
 );
 
 export const curriculum = LEVEL_CONFIGS.map((levelConfig) => ({

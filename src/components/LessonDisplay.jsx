@@ -65,13 +65,10 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {lesson.vocabulary.map((v, i) => (
               <div key={i} style={{ padding: '1rem', border: '1px solid #eee', borderRadius: '8px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <h4 style={{ fontSize: '1.2rem', color: 'var(--primary)' }}>{v.word}</h4>
-                  <span style={{ color: '#ffc107' }}>{v.difficulty}</span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}><strong>Def:</strong> {v.definition}</p>
-                <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}><em>"{v.example}"</em></p>
-                <p style={{ fontSize: '0.95rem', fontWeight: 500, borderTop: '1px solid #f5f5f5', paddingTop: '0.5rem' }}>Q: {v.question}</p>
+                <h4 style={{ fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '0.65rem' }}>{v.word}</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                  <strong>Definition:</strong> {v.definition}
+                </p>
               </div>
             ))}
           </div>
