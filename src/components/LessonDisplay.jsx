@@ -93,8 +93,28 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
           <div style={{ padding: '1.5rem', background: '#f6fff7', borderRadius: '8px', border: '1px solid #e0f2e1' }}>
             <h4 style={{ color: 'var(--grammar-text)', marginBottom: '0.5rem' }}>{lesson.grammar.title}</h4>
             <p style={{ marginBottom: '1rem' }}>{lesson.grammar.explanation}</p>
-            <div style={{ padding: '0.75rem', background: 'white', borderRadius: '6px', borderLeft: '4px solid var(--grammar-text)', marginBottom: '1rem' }}>
-              <p><strong>Example:</strong> {lesson.grammar.example}</p>
+            {lesson.grammar.structure && (
+              <div style={{ padding: '0.75rem', background: 'white', borderRadius: '6px', borderLeft: '4px solid var(--grammar-text)', marginBottom: '1rem' }}>
+                <p><strong>Structure:</strong> {lesson.grammar.structure}</p>
+              </div>
+            )}
+            {lesson.grammar.teachingTip && (
+              <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '6px', border: '1px dashed #cde6cf', marginBottom: '1rem' }}>
+                <p style={{ color: 'var(--text-muted)' }}><strong>Teaching Note:</strong> {lesson.grammar.teachingTip}</p>
+              </div>
+            )}
+            <div style={{ marginBottom: '1rem' }}>
+              <p style={{ fontWeight: 700, marginBottom: '0.6rem' }}>Examples</p>
+              <div style={{ display: 'grid', gap: '0.6rem' }}>
+                {lesson.grammar.examples.map((example, index) => (
+                  <div
+                    key={index}
+                    style={{ padding: '0.75rem', background: 'white', borderRadius: '6px', borderLeft: '4px solid var(--grammar-text)' }}
+                  >
+                    <p>{example}</p>
+                  </div>
+                ))}
+              </div>
             </div>
             <p style={{ fontWeight: 600 }}>Speaking Practice: {lesson.grammar.question}</p>
           </div>
