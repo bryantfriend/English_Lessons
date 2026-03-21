@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Coffee, Book, MessageSquare, GraduationCap, 
   CheckCircle, Lightbulb, Clock, 
@@ -8,19 +8,21 @@ import { motion } from 'framer-motion';
 
 const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
   const MotionDiv = motion.div;
+  const [showTeacherMode, setShowTeacherMode] = useState(true);
   if (!lesson) return null;
 
   const handlePrint = () => {
     window.print();
   };
 
+  const timing = lesson.teacherMode?.timing ?? {};
   const sections = [
-    { id: 'warmup', title: 'Warm-up', icon: Coffee, color: 'warmup', time: '5 min' },
-    { id: 'vocabulary', title: 'Vocabulary', icon: Book, color: 'vocabulary', time: '10 min' },
-    { id: 'idioms', title: 'Idioms & Expressions', icon: MessageSquare, color: 'idioms', time: '10 min' },
-    { id: 'grammar', title: 'Grammar', icon: GraduationCap, color: 'grammar', time: '10 min' },
-    { id: 'activities', title: 'Activities', icon: Sparkles, color: 'activities', time: '20 min' },
-    { id: 'wrapup', title: 'Wrap-up', icon: CheckCircle, color: 'wrapup', time: '5 min' },
+    { id: 'warmup', title: 'Warm-up', icon: Coffee, color: 'warmup', time: timing.warmup ?? '5 min' },
+    { id: 'vocabulary', title: 'Vocabulary', icon: Book, color: 'vocabulary', time: timing.vocabulary ?? '10 min' },
+    { id: 'idioms', title: 'Idioms & Expressions', icon: MessageSquare, color: 'idioms', time: timing.idioms ?? '10 min' },
+    { id: 'grammar', title: 'Grammar', icon: GraduationCap, color: 'grammar', time: timing.grammar ?? '10 min' },
+    { id: 'activities', title: 'Activities', icon: Sparkles, color: 'activities', time: timing.activities ?? '20 min' },
+    { id: 'wrapup', title: 'Wrap-up', icon: CheckCircle, color: 'wrapup', time: timing.wrapup ?? '5 min' },
     { id: 'tips', title: 'Teacher Tips', icon: Lightbulb, color: 'tips', time: null },
   ];
 
@@ -43,6 +45,10 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
           )}
         </div>
         <div className="no-print" style={{ display: 'flex', gap: '1rem' }}>
+          <button className="btn" onClick={() => setShowTeacherMode((current) => !current)}>
+            <Lightbulb size={20} />
+            <span>{showTeacherMode ? 'Hide Teacher Mode' : 'Show Teacher Mode'}</span>
+          </button>
           <button className="btn" onClick={() => onToggleFavorite(lesson.id)} style={{ color: isFavorite ? '#ffc107' : '#ccc' }}>
             <Star fill={isFavorite ? "#ffc107" : "none"} size={20} />
             <span>{isFavorite ? 'Favorited' : 'Add to Favorites'}</span>
@@ -55,6 +61,89 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
       </div>
 
       <div className="lesson-grid">
+        {showTeacherMode && lesson.teacherMode && (
+          <section className="card teacher-mode-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+              <div>
+                <p className="teacher-mode-label">Teacher Mode</p>
+                <h2 style={{ fontSize: '1.6rem' }}>Lesson Guide</h2>
+              </div>
+              <div className="teacher-mode-total">
+                <Clock size={16} />
+                <span>Total: {lesson.teacherMode.timing.total}</span>
+              </div>
+            </div>
+
+            <div className="teacher-mode-grid">
+              <div className="teacher-panel">
+                <h3>Timing By Section</h3>
+                <div className="teacher-timing-list">
+                  {sections.slice(0, 6).map((section) => (
+                    <div key={section.id} className="teacher-timing-row">
+                      <span>{section.title}</span>
+                      <strong>{section.time}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="teacher-panel">
+                <h3>Materials Needed</h3>
+                <ul className="teacher-list">
+                  {lesson.teacherMode.materials.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="teacher-panel teacher-panel-wide">
+                <h3>Step-By-Step Procedure</h3>
+                <div className="teacher-procedure-list">
+                  {lesson.teacherMode.procedure.map((step, index) => (
+                    <div key={index} className="teacher-procedure-row">
+                      <div className="teacher-step-badge">{index + 1}</div>
+                      <p>{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="teacher-panel">
+                <h3>Differentiation Support</h3>
+                <ul className="teacher-list">
+                  {lesson.teacherMode.differentiation.support.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="teacher-panel">
+                <h3>Differentiation Challenge</h3>
+                <ul className="teacher-list">
+                  {lesson.teacherMode.differentiation.challenge.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="teacher-panel">
+                <h3>Extension Idea</h3>
+                <p>{lesson.teacherMode.extension}</p>
+              </div>
+
+              <div className="teacher-panel">
+                <h3>Homework</h3>
+                <p>{lesson.teacherMode.homework}</p>
+              </div>
+
+              <div className="teacher-panel teacher-panel-wide teacher-panel-accent">
+                <h3>Quick Assessment / Exit Ticket</h3>
+                <p>{lesson.teacherMode.exitTicket}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="card">
           <SectionHeader info={sections[0]} />
           <p style={{ fontSize: '1.1rem', fontStyle: 'italic' }}>"{lesson.warmup}"</p>

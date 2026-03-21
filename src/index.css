@@ -262,6 +262,104 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
 }
 
+.teacher-mode-card {
+  background: linear-gradient(135deg, #fffef4 0%, #f8fbff 100%);
+  border: 1px solid #ece7bf;
+}
+
+.teacher-mode-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b78a00;
+  margin-bottom: 0.35rem;
+}
+
+.teacher-mode-total {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ece7bf;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.teacher-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.teacher-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.teacher-panel h3 {
+  font-size: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.teacher-panel-wide {
+  grid-column: 1 / -1;
+}
+
+.teacher-panel-accent {
+  background: #fffdf0;
+  border-color: #eadf9b;
+}
+
+.teacher-list {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.teacher-timing-list,
+.teacher-procedure-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.teacher-timing-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.teacher-timing-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.teacher-procedure-row {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.teacher-step-badge {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
 /* Print Styles */
 @media print {
   .no-print {
@@ -282,6 +380,13 @@ h1, h2, h3, h4 {
   }
   body {
     background: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .teacher-mode-total {
+    width: 100%;
+    justify-content: center;
   }
 }
 

@@ -1170,6 +1170,150 @@ function buildTeacherTips(title, level) {
   return profile.teacherTips;
 }
 
+function getTeacherTimingProfile(level) {
+  if (level.startsWith('Kids')) {
+    return {
+      warmup: '5 min',
+      vocabulary: '8 min',
+      idioms: '6 min',
+      grammar: '8 min',
+      activities: '23 min',
+      wrapup: '5 min',
+      total: '55 min',
+    };
+  }
+
+  return {
+    warmup: '5 min',
+    vocabulary: '10 min',
+    idioms: '10 min',
+    grammar: '10 min',
+    activities: '20 min',
+    wrapup: '5 min',
+    total: '60 min',
+  };
+}
+
+function buildMaterials(lesson) {
+  const themeKey = inferThemeKey(lesson.title);
+  const common = ['Whiteboard or projector', 'Markers and note paper', 'Vocabulary display or board space'];
+  const kidsCore = ['Picture cards or simple visuals', 'Props for movement, mime, or roleplay'];
+  const adultCore = ['Discussion prompts or slides', 'Space for pair and group speaking'];
+  const themeExtras = {
+    family: ['Paper for a family tree or mini character cards'],
+    education: ['School routine picture cards or classroom labels'],
+    colors: ['Colored objects, crayons, or sample images'],
+    animals: ['Animal picture cards or puppets'],
+    food: ['Food flashcards, menus, or pretend order slips'],
+    toys: ['A mystery bag and a few toy or block props'],
+    weather: ['Weather symbols or forecast cards'],
+    playground: ['Movement cards, cones, or floor markers'],
+    feelings: ['Emotion cards or emoji faces'],
+    hobbies: ['Hobby picture cards or club poster paper'],
+    friends: ['Compliment cards or roleplay prompts'],
+    birthday: ['Invitation templates or party planning cards'],
+    travel: ['Maps, pretend tickets, or passport templates'],
+    sports: ['Soft ball, whistle, or rule cards'],
+    story: ['Story sequence cards or drawing paper'],
+    science: ['Simple demo props or invention sketch sheets'],
+    technology: ['Device pictures or invention planning templates'],
+    dreams: ['Goal cards, costume props, or dream poster paper'],
+  };
+
+  return [
+    ...(lesson.level.startsWith('Kids') ? kidsCore : adultCore),
+    ...common,
+    ...(themeExtras[themeKey] ?? ['A few topic visuals or prompt cards']),
+  ];
+}
+
+function buildProcedure(lesson) {
+  const topic = stripUnitNumber(lesson.title).toLowerCase();
+
+  return [
+    `Open with the warm-up and give students 30-60 seconds to think before sharing. Model one strong answer tied to ${topic}.`,
+    `Pre-teach the three vocabulary words with quick checks for meaning, then ask students to use each word in a short spoken sentence.`,
+    `Introduce the two idioms in context. Contrast literal and figurative meaning, then ask pairs to decide when each idiom would sound natural.`,
+    `Teach the grammar focus with the structure, examples, and one guided board model before students produce their own sentences.`,
+    `Run the activities from controlled to freer speaking: start with the easiest task, circulate for support, and recycle target language while students speak.`,
+    `Close with the wrap-up and a quick reflection so students leave the lesson using at least one vocabulary item, one idiom, or the grammar target.`,
+  ];
+}
+
+function buildDifferentiation(lesson) {
+  const topic = stripUnitNumber(lesson.title).toLowerCase();
+
+  if (lesson.level.startsWith('Kids')) {
+    return {
+      support: [
+        `Pre-teach key words with gestures, visuals, and choral repetition before asking children to speak independently about ${topic}.`,
+        'Keep sentence frames visible, such as "I see...", "I feel...", "I want...", or "My favorite... is...".',
+        'Let shy learners answer with pointing, drawing, mime, or partner support before full-class speaking.',
+      ],
+      challenge: [
+        `Invite stronger children to add one extra detail, feeling, or reason every time they speak about ${topic}.`,
+        'Ask confident learners to lead a roleplay, explain game rules, or help model the target language for the class.',
+        'Challenge fast finishers to connect two target words in one sentence or retell the task as a mini story.',
+      ],
+    };
+  }
+
+  return {
+    support: [
+      `Provide sentence starters and one model response before open discussion so weaker students can speak more confidently about ${topic}.`,
+      'Allow preparation time in pairs before students report to the class, and keep useful phrases visible on the board.',
+      'Reduce cognitive load by assigning one clear speaking goal per stage: vocabulary, then idioms, then grammar, then freer discussion.',
+    ],
+    challenge: [
+      `Push stronger students to justify opinions, compare perspectives, and extend their answers with a real example connected to ${topic}.`,
+      'Ask advanced speakers to paraphrase a partner’s idea, challenge it politely, or reformulate it using the grammar target.',
+      'Use follow-up prompts that require nuance, consequence, or evaluation rather than simple personal preference.',
+    ],
+  };
+}
+
+function buildExtensionAndHomework(lesson) {
+  const topic = stripUnitNumber(lesson.title).toLowerCase();
+
+  if (lesson.level.startsWith('Kids')) {
+    return {
+      extension: `Run a fast bonus task where children draw, label, or act out one more idea connected to ${topic}, then present it in under 20 seconds.`,
+      homework: `Ask children to bring, draw, or describe one object, picture, or memory connected to ${topic} and prepare one short sentence to share next lesson.`,
+    };
+  }
+
+  return {
+    extension: `Add a follow-up discussion, mini presentation, or poster task where students apply today’s vocabulary, idioms, and grammar to a fresh angle on ${topic}.`,
+    homework: `Students write or record a short response about ${topic} using at least two vocabulary words, one idiom, and one example of the grammar focus.`,
+  };
+}
+
+function buildExitTicket(lesson) {
+  const vocabWord = lesson.vocabulary[0]?.word ?? 'one new word';
+  const idiom = lesson.idioms[0]?.idiom ?? 'one idiom';
+
+  if (lesson.level.startsWith('Kids')) {
+    return `Before leaving, each child says one sentence using "${vocabWord}" or acts out "${idiom}" and explains when it fits.`;
+  }
+
+  return `Before leaving, each student gives one spoken sentence using "${vocabWord}" and explains one real situation where "${idiom}" would sound natural.`;
+}
+
+function buildTeacherMode(lesson) {
+  const timing = getTeacherTimingProfile(lesson.level);
+  const followUp = buildExtensionAndHomework(lesson);
+
+  return {
+    timing,
+    materials: buildMaterials(lesson),
+    procedure: buildProcedure(lesson),
+    differentiation: buildDifferentiation(lesson),
+    extension: followUp.extension,
+    homework: followUp.homework,
+    exitTicket: buildExitTicket(lesson),
+  };
+}
+
 function getLessonOverride(level, title) {
   return LESSON_OVERRIDES[level]?.[title] ?? LESSON_OVERRIDES[level]?.[stripUnitNumber(title)] ?? null;
 }
@@ -1179,7 +1323,7 @@ function buildLesson(levelConfig, title, lessonNumber) {
   const angle = buildLessonAngle(title, lessonNumber);
   const override = getLessonOverride(levelConfig.level, title);
 
-  return {
+  const lesson = {
     id: `${slugify(levelConfig.level)}-${String(lessonNumber).padStart(3, '0')}`,
     level: levelConfig.level,
     topic: title,
@@ -1196,6 +1340,10 @@ function buildLesson(levelConfig, title, lessonNumber) {
     wrapup: buildWrapup(title, lessonNumber),
     teacherTips: buildTeacherTips(title, levelConfig.level),
   };
+
+  lesson.teacherMode = buildTeacherMode(lesson);
+
+  return lesson;
 }
 
 const lessons = LEVEL_CONFIGS.flatMap((levelConfig) =>
