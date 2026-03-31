@@ -206,6 +206,7 @@ const App = () => {
                 <span>Back to Lessons</span>
               </button>
               <LessonDisplay 
+                key={selectedLesson.id}
                 lesson={selectedLesson} 
                 onToggleFavorite={toggleFavorite} 
                 isFavorite={favorites.includes(selectedLesson.id)} 

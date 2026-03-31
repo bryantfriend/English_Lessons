@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  Coffee, Book, MessageSquare, GraduationCap, 
-  CheckCircle, Lightbulb, Clock, 
-  Printer, Star, Sparkles
+import {
+  Coffee, Book, MessageSquare, GraduationCap,
+  CheckCircle, Lightbulb, Clock,
+  Printer, Star, Sparkles, ChevronDown, ChevronRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
   const MotionDiv = motion.div;
-  const [showTeacherMode, setShowTeacherMode] = useState(true);
+  const [openSections, setOpenSections] = useState({});
+
   if (!lesson) return null;
 
   const handlePrint = () => {
@@ -17,6 +18,7 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
 
   const timing = lesson.teacherMode?.timing ?? {};
   const sections = [
+    { id: 'teacher-mode', title: 'Teacher Mode', icon: Lightbulb, color: 'tips', time: lesson.teacherMode?.timing?.total ?? null },
     { id: 'warmup', title: 'Warm-up', icon: Coffee, color: 'warmup', time: timing.warmup ?? '5 min' },
     { id: 'vocabulary', title: 'Vocabulary', icon: Book, color: 'vocabulary', time: timing.vocabulary ?? '10 min' },
     { id: 'idioms', title: 'Idioms & Expressions', icon: MessageSquare, color: 'idioms', time: timing.idioms ?? '10 min' },
@@ -26,13 +28,30 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
     { id: 'tips', title: 'Teacher Tips', icon: Lightbulb, color: 'tips', time: null },
   ];
 
+  const sectionIds = sections.filter((section) => section.id !== 'teacher-mode' || lesson.teacherMode).map((section) => section.id);
+
+  const toggleSection = (sectionId) => {
+    setOpenSections((current) => ({
+      ...current,
+      [sectionId]: !current[sectionId],
+    }));
+  };
+
+  const expandAll = () => {
+    setOpenSections(Object.fromEntries(sectionIds.map((id) => [id, true])));
+  };
+
+  const collapseAll = () => {
+    setOpenSections({});
+  };
+
   return (
-    <MotionDiv 
+    <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="lesson-view"
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', gap: '1.5rem', flexWrap: 'wrap' }}>
         <div>
           <span style={{ background: '#eee', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {lesson.level} • {lesson.topic} • {lesson.sequenceLabel}
@@ -44,13 +63,17 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
             </p>
           )}
         </div>
-        <div className="no-print" style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn" onClick={() => setShowTeacherMode((current) => !current)}>
-            <Lightbulb size={20} />
-            <span>{showTeacherMode ? 'Hide Teacher Mode' : 'Show Teacher Mode'}</span>
+        <div className="no-print" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <button className="btn" onClick={expandAll}>
+            <ChevronDown size={20} />
+            <span>Expand All</span>
+          </button>
+          <button className="btn" onClick={collapseAll}>
+            <ChevronRight size={20} />
+            <span>Collapse All</span>
           </button>
           <button className="btn" onClick={() => onToggleFavorite(lesson.id)} style={{ color: isFavorite ? '#ffc107' : '#ccc' }}>
-            <Star fill={isFavorite ? "#ffc107" : "none"} size={20} />
+            <Star fill={isFavorite ? '#ffc107' : 'none'} size={20} />
             <span>{isFavorite ? 'Favorited' : 'Add to Favorites'}</span>
           </button>
           <button className="btn btn-primary" onClick={handlePrint}>
@@ -61,9 +84,14 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
       </div>
 
       <div className="lesson-grid">
-        {showTeacherMode && lesson.teacherMode && (
-          <section className="card teacher-mode-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+        {lesson.teacherMode && (
+          <CollapsibleSection
+            info={sections[0]}
+            isOpen={Boolean(openSections['teacher-mode'])}
+            onToggle={() => toggleSection('teacher-mode')}
+            className="teacher-mode-card"
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
               <div>
                 <p className="teacher-mode-label">Teacher Mode</p>
                 <h2 style={{ fontSize: '1.6rem' }}>Lesson Guide</h2>
@@ -78,7 +106,7 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
               <div className="teacher-panel">
                 <h3>Timing By Section</h3>
                 <div className="teacher-timing-list">
-                  {sections.slice(0, 6).map((section) => (
+                  {sections.slice(1, 7).map((section) => (
                     <div key={section.id} className="teacher-timing-row">
                       <span>{section.title}</span>
                       <strong>{section.time}</strong>
@@ -141,16 +169,22 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
                 <p>{lesson.teacherMode.exitTicket}</p>
               </div>
             </div>
-          </section>
+          </CollapsibleSection>
         )}
 
-        <section className="card">
-          <SectionHeader info={sections[0]} />
+        <CollapsibleSection
+          info={sections[1]}
+          isOpen={Boolean(openSections.warmup)}
+          onToggle={() => toggleSection('warmup')}
+        >
           <p style={{ fontSize: '1.1rem', fontStyle: 'italic' }}>"{lesson.warmup}"</p>
-        </section>
+        </CollapsibleSection>
 
-        <section className="card">
-          <SectionHeader info={sections[1]} />
+        <CollapsibleSection
+          info={sections[2]}
+          isOpen={Boolean(openSections.vocabulary)}
+          onToggle={() => toggleSection('vocabulary')}
+        >
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {lesson.vocabulary.map((v, i) => (
               <div key={i} style={{ padding: '1rem', border: '1px solid #eee', borderRadius: '8px' }}>
@@ -161,10 +195,13 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
               </div>
             ))}
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <section className="card">
-          <SectionHeader info={sections[2]} />
+        <CollapsibleSection
+          info={sections[3]}
+          isOpen={Boolean(openSections.idioms)}
+          onToggle={() => toggleSection('idioms')}
+        >
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem' }}>
             {lesson.idioms.map((id, i) => (
               <div key={i} style={{ padding: '1rem', background: '#fcfaff', borderRadius: '8px', border: '1px solid #f0e6ff' }}>
@@ -175,10 +212,13 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
               </div>
             ))}
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <section className="card">
-          <SectionHeader info={sections[3]} />
+        <CollapsibleSection
+          info={sections[4]}
+          isOpen={Boolean(openSections.grammar)}
+          onToggle={() => toggleSection('grammar')}
+        >
           <div style={{ padding: '1.5rem', background: '#f6fff7', borderRadius: '8px', border: '1px solid #e0f2e1' }}>
             <h4 style={{ color: 'var(--grammar-text)', marginBottom: '0.5rem' }}>{lesson.grammar.title}</h4>
             <p style={{ marginBottom: '1rem' }}>{lesson.grammar.explanation}</p>
@@ -207,10 +247,13 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
             </div>
             <p style={{ fontWeight: 600 }}>Speaking Practice: {lesson.grammar.question}</p>
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <section className="card">
-          <SectionHeader info={sections[4]} />
+        <CollapsibleSection
+          info={sections[5]}
+          isOpen={Boolean(openSections.activities)}
+          onToggle={() => toggleSection('activities')}
+        >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {lesson.activities.map((act, i) => (
               <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '1rem', background: '#fff9f0', borderRadius: '8px' }}>
@@ -221,45 +264,57 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
               </div>
             ))}
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem' }}>
-          <section className="card">
-            <SectionHeader info={sections[5]} />
-            <p style={{ fontSize: '1.1rem', fontWeight: 500 }}>{lesson.wrapup}</p>
-          </section>
+        <CollapsibleSection
+          info={sections[6]}
+          isOpen={Boolean(openSections.wrapup)}
+          onToggle={() => toggleSection('wrapup')}
+        >
+          <p style={{ fontSize: '1.1rem', fontWeight: 500 }}>{lesson.wrapup}</p>
+        </CollapsibleSection>
 
-          <section className="card">
-            <SectionHeader info={sections[6]} />
-            <ul style={{ paddingLeft: '1.2rem' }}>
-              {lesson.teacherTips.map((tip, i) => (
-                <li key={i} style={{ marginBottom: '0.5rem', color: '#666' }}>{tip}</li>
-              ))}
-            </ul>
-          </section>
-        </div>
+        <CollapsibleSection
+          info={sections[7]}
+          isOpen={Boolean(openSections.tips)}
+          onToggle={() => toggleSection('tips')}
+        >
+          <ul style={{ paddingLeft: '1.2rem' }}>
+            {lesson.teacherTips.map((tip, i) => (
+              <li key={i} style={{ marginBottom: '0.5rem', color: '#666' }}>{tip}</li>
+            ))}
+          </ul>
+        </CollapsibleSection>
       </div>
     </MotionDiv>
   );
 };
 
-const SectionHeader = ({ info }) => {
+const CollapsibleSection = ({ info, isOpen, onToggle, children, className = '' }) => {
   const Icon = info.icon;
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div className={`section-${info.color}`} style={{ padding: '0.5rem', borderRadius: '8px' }}>
-          <Icon size={20} />
+    <section className={`card accordion-card ${className}`.trim()}>
+      <button className="accordion-trigger" onClick={onToggle} type="button">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className={`section-${info.color}`} style={{ padding: '0.5rem', borderRadius: '8px' }}>
+            <Icon size={20} />
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <h3 style={{ fontSize: '1.25rem' }}>{info.title}</h3>
+          </div>
         </div>
-        <h3 style={{ fontSize: '1.25rem' }}>{info.title}</h3>
-      </div>
-      {info.time && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500 }}>
-          <Clock size={14} />
-          <span>{info.time}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          {info.time && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500 }}>
+              <Clock size={14} />
+              <span>{info.time}</span>
+            </div>
+          )}
+          {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
         </div>
-      )}
-    </div>
+      </button>
+      {isOpen && <div className="accordion-content">{children}</div>}
+    </section>
   );
 };
 

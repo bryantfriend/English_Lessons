@@ -360,6 +360,29 @@ h1, h2, h3, h4 {
   flex-shrink: 0;
 }
 
+.accordion-card {
+  padding: 1rem 1.25rem;
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.accordion-content {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 /* Print Styles */
 @media print {
   .no-print {
@@ -387,6 +410,10 @@ h1, h2, h3, h4 {
   .teacher-mode-total {
     width: 100%;
     justify-content: center;
+  }
+
+  .accordion-trigger {
+    align-items: flex-start;
   }
 }
 
