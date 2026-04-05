@@ -189,8 +189,14 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
             {lesson.vocabulary.map((v, i) => (
               <div key={i} style={{ padding: '1rem', border: '1px solid #eee', borderRadius: '8px' }}>
                 <h4 style={{ fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '0.65rem' }}>{v.word}</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '0.6rem' }}>
                   <strong>Definition:</strong> {v.definition}
+                </p>
+                <p style={{ fontSize: '0.92rem', marginBottom: '0.6rem' }}>
+                  <strong>Example:</strong> {v.example}
+                </p>
+                <p style={{ fontSize: '0.92rem', fontWeight: 500 }}>
+                  Practice: {v.question}
                 </p>
               </div>
             ))}

@@ -887,6 +887,29 @@ function getVocabularyDefinition(word, title) {
   return definition;
 }
 
+function buildVocabularyExample(word, title) {
+  const topic = stripUnitNumber(title).toLowerCase();
+  return `In this lesson, "${word.toLowerCase()}" fits a real idea, person, object, or action connected to ${topic}.`;
+}
+
+function buildVocabularyQuestion(word, title, level) {
+  const topic = stripUnitNumber(title).toLowerCase();
+
+  if (level.startsWith('Kids')) {
+    return `Can you say one short sentence about ${topic} using the word "${word.toLowerCase()}"?`;
+  }
+
+  return `What is one real example of "${word.toLowerCase()}" in a conversation about ${topic}?`;
+}
+
+function enrichVocabularyItem(item, title, level) {
+  return {
+    ...item,
+    example: item.example ?? buildVocabularyExample(item.word, title),
+    question: item.question ?? buildVocabularyQuestion(item.word, title, level),
+  };
+}
+
 function buildVocabulary(title, lessonNumber) {
   const profile = getThemeProfile(title);
   const pool = profile.vocabulary;
@@ -897,6 +920,8 @@ function buildVocabulary(title, lessonNumber) {
     return {
       word: toTitleCase(word),
       definition: getVocabularyDefinition(word, title),
+      example: buildVocabularyExample(word, title),
+      question: buildVocabularyQuestion(word, title, 'General'),
     };
   });
 }
@@ -1323,6 +1348,7 @@ function buildLesson(levelConfig, title, lessonNumber) {
   const angle = buildLessonAngle(title, lessonNumber);
   const override = getLessonOverride(levelConfig.level, title);
 
+  const rawVocabulary = override?.vocabulary ?? buildVocabulary(title, lessonNumber);
   const lesson = {
     id: `${slugify(levelConfig.level)}-${String(lessonNumber).padStart(3, '0')}`,
     level: levelConfig.level,
@@ -1333,7 +1359,7 @@ function buildLesson(levelConfig, title, lessonNumber) {
     audience: levelConfig.audience,
     objective: override?.objective ?? `Explore ${angle} while ${focus}.`,
     warmup: override?.warmup ?? buildWarmup(title, lessonNumber, levelConfig.level),
-    vocabulary: override?.vocabulary ?? buildVocabulary(title, lessonNumber),
+    vocabulary: rawVocabulary.map((item) => enrichVocabularyItem(item, title, levelConfig.level)),
     idioms: override?.idioms ?? buildIdioms(title, lessonNumber),
     grammar: buildGrammar(title, lessonNumber),
     activities: override?.activities ?? buildActivities(title, lessonNumber, levelConfig.level),
