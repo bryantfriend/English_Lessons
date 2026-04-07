@@ -982,6 +982,52 @@ function buildWarmup(title, lessonNumber, level) {
   return `${prompt} Focus on ${angle} instead of giving only a general opinion.`;
 }
 
+function buildStarterActivity(title, lessonNumber, level) {
+  const themeKey = inferThemeKey(title);
+  const topic = stripUnitNumber(title).toLowerCase();
+  const stage = level.startsWith('Kids') ? getKidsStage(level) : null;
+
+  if (level.startsWith('Kids')) {
+    const starterTasks = {
+      family: 'Show or draw one family member, then say one kind word and one fun fact.',
+      education: 'Act out one school routine and let the class guess the action.',
+      colors: 'Find or point to three colors in the room and say what each color matches.',
+      animals: 'Mime an animal and give one clue about its home or sound.',
+      food: 'Choose one food card or drawing and say if it is for breakfast, lunch, or dinner.',
+      toys: 'Hold up or draw a toy and say one rule for how to play with it.',
+      weather: 'Listen to a weather word and make the matching movement or sound.',
+      playground: 'Act out one playground action and ask the class to copy it safely.',
+      feelings: 'Pick a feeling face and say when someone might feel that way.',
+      hobbies: 'Mime a hobby for ten seconds and let classmates guess it.',
+      friends: 'Give a partner a compliment or friendly greeting using the topic words.',
+      birthday: 'Choose a party picture and say what should happen first at the celebration.',
+      travel: 'Pick a destination card and say what you would pack or how you would get there.',
+      sports: 'Show one sport move and say one short team rule.',
+      story: 'Look at a picture and invent the first line of a story.',
+      science: 'Make one quick prediction about a simple object, experiment, or invention.',
+      technology: 'Show a gadget picture and say what problem it solves.',
+      dreams: 'Say or draw one dream for the future in a short sentence.',
+    };
+
+    return `${starterTasks[themeKey] ?? `Give students a fast speaking or drawing task connected to ${topic}.`} ${stage === 'Starter' ? 'Keep it visual and very short.' : stage === 'Explorer' ? 'Add a partner follow-up question.' : 'Ask for one extra detail or reason.'}`;
+  }
+
+  const adultStarters = {
+    travel: 'Give students 60 seconds to rank three travel images or situations, then justify their fastest choice to a partner.',
+    culture: 'Show one image, symbol, or tradition connected to the topic and ask pairs to predict what values it represents.',
+    media: 'Start with a headline, quote, or short scenario and ask students what reaction it would create first.',
+    technology: 'Show a device, innovation, or dilemma and ask students to decide whether it helps or harms daily life more.',
+    environment: 'Use one photo or statistic and ask students to name the first problem and one realistic response.',
+    money: 'Give students a quick spending, saving, or value choice and ask them to defend it in one sentence.',
+    city: 'Compare two places, photos, or plans and ask which seems more practical, livable, or memorable.',
+    psychology: 'Present a short decision or habit scenario and ask students what might be influencing the person most.',
+    ethics: 'Begin with a mini dilemma and ask students to choose a side before explaining why.',
+    story: 'Show a picture, title, or opening line and ask students to predict the conflict or message.',
+  };
+
+  return adultStarters[themeKey] ?? `Give students a fast pair task connected to ${topic}: sort, rank, predict, or choose something before the main discussion begins.`;
+}
+
 function getKidsStage(level) {
   if (level.includes('Starter')) return 'Starter';
   if (level.includes('Explorer')) return 'Explorer';
@@ -1359,6 +1405,7 @@ function buildLesson(levelConfig, title, lessonNumber) {
     audience: levelConfig.audience,
     objective: override?.objective ?? `Explore ${angle} while ${focus}.`,
     warmup: override?.warmup ?? buildWarmup(title, lessonNumber, levelConfig.level),
+    starterActivity: override?.starterActivity ?? buildStarterActivity(title, lessonNumber, levelConfig.level),
     vocabulary: rawVocabulary.map((item) => enrichVocabularyItem(item, title, levelConfig.level)),
     idioms: override?.idioms ?? buildIdioms(title, lessonNumber),
     grammar: buildGrammar(title, lessonNumber),

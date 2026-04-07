@@ -178,6 +178,14 @@ const LessonDisplay = ({ lesson, onToggleFavorite, isFavorite }) => {
           onToggle={() => toggleSection('warmup')}
         >
           <p style={{ fontSize: '1.1rem', fontStyle: 'italic' }}>"{lesson.warmup}"</p>
+          {lesson.starterActivity && (
+            <div style={{ marginTop: '1rem', padding: '1rem', borderRadius: '10px', background: '#f8fbff', border: '1px solid #d7e6fb' }}>
+              <p style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--warmup-text)', marginBottom: '0.45rem' }}>
+                Optional Starter Activity
+              </p>
+              <p>{lesson.starterActivity}</p>
+            </div>
+          )}
         </CollapsibleSection>
 
         <CollapsibleSection
